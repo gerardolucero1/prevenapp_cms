@@ -19,6 +19,13 @@
                         <div class="text-h6">Confirmados</div>
                         <div class="text-subtitle2">Total de casos confirmados:</div>
                         <q-badge color="red" text-color="white" :label="cases.confirmed" style="font-size: 18px; font-weight: bold; padding: 10px;" />
+                        <q-popup-edit v-model="cases.confirmed" content-class="bg-accent text-white">
+                            <q-input @keyup.enter="updateCases" dark color="white" v-model="cases.confirmed" dense autofocus counter>
+                                <template v-slot:append>
+                                <q-icon name="edit" />
+                                </template>
+                            </q-input>
+                        </q-popup-edit>
                     </q-card-section>
                     <q-card-section>
                         
@@ -32,6 +39,13 @@
                         <div class="text-h6">Sospechosos</div>
                         <div class="text-subtitle2">Total de casos sospechosos:</div>
                         <q-badge color="orange" text-color="white" :label="cases.suspect" style="font-size: 18px; font-weight: bold; padding: 10px;" />
+                        <q-popup-edit v-model="cases.suspect" content-class="bg-accent text-white">
+                            <q-input @keyup.enter="updateCases" dark color="white" v-model="cases.suspect" dense autofocus counter>
+                                <template v-slot:append>
+                                <q-icon name="edit" />
+                                </template>
+                            </q-input>
+                        </q-popup-edit>
                     </q-card-section>
                     <q-card-section>
                         
@@ -45,6 +59,13 @@
                         <div class="text-h6">Recuperados</div>
                         <div class="text-subtitle2">Total de casos recuperados:</div>
                         <q-badge color="green" text-color="white" :label="cases.recovered" style="font-size: 18px; font-weight: bold; padding: 10px;" />
+                        <q-popup-edit v-model="cases.recovered" content-class="bg-accent text-white">
+                            <q-input @keyup.enter="updateCases" dark color="white" v-model="cases.recovered" dense autofocus counter>
+                                <template v-slot:append>
+                                <q-icon name="edit" />
+                                </template>
+                            </q-input>
+                        </q-popup-edit>
                     </q-card-section>
                     <q-card-section>
                         
@@ -72,6 +93,16 @@ export default {
     },
 
     methods: {
+        async updateCases(){
+            try {
+                let response = await db.collection('cases').doc('chihuahua')
+                                                .update(this.cases)
+
+            } catch (error) {
+                console.log(error)
+            }
+        },
+
         async getCases(){
             try {
                 let response = await db.collection('cases').doc('chihuahua').get()
