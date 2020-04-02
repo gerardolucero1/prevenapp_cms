@@ -69,7 +69,7 @@ export default {
             auth.languageCode = 'es_MX'
             try{
                 await auth.signInWithPopup(provider)
-                this.$router.push({ name: 'formulario' })
+                this.$router.push({ path: 'form' })
             }
             catch(error){
                 console.log(error)
@@ -84,7 +84,7 @@ export default {
             auth.languageCode = 'es_MX'
             try{
                 let response = await auth.signInWithPopup(provider)
-                this.$router.push({ name: 'formulario' })
+                this.$router.push({ path: 'form' })
             }
             catch(error){
                 console.log(error)
@@ -94,7 +94,7 @@ export default {
         async ingresarEmail(){
             try{
                 await auth.signInWithEmailAndPassword(this.formulario.email, this.formulario.password)
-                this.$router.push({ name: 'formulario' })
+                this.$router.push({ path: 'form' })
             }
             catch(error){
                 console.log(error)
