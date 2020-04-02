@@ -2,6 +2,14 @@
 const routes = [
     {
         path: '/',
+        component: () => import('layouts/AppLayout.vue'),
+        children: [
+            { path: '', component: () => import('pages/user/Login.vue') }
+        ]
+    },
+
+    {
+        path: '/home',
         component: () => import('layouts/MainLayout.vue'),
         children: [
             { path: '', component: () => import('pages/Index.vue') }
@@ -26,6 +34,7 @@ const routes = [
 
     {
         path: '/form',
+        name: 'formulario',
         component: () => import('layouts/MainLayout.vue'),
         children: [
             { path: '', component: () => import('pages/Form.vue') }

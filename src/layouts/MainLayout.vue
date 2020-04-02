@@ -34,7 +34,7 @@
                 >
                 Menu
             </q-item-label>
-            <q-item to="/">
+            <q-item to="/home">
                 <q-item-section top avatar>
                     <q-avatar text-color="black" icon="dashboard" />
                 </q-item-section>
