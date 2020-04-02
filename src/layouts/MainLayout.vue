@@ -64,13 +64,23 @@
                 </q-item-section>
             </q-item>
 
-            <q-item>
+            <!-- <q-item>
                 <q-item-section top avatar>
                     <q-avatar text-color="black" icon="explore" />
                 </q-item-section>
                 <q-item-section>
                     <q-item-label>Global</q-item-label>
                     <q-item-label caption lines="2">Informacion global</q-item-label>
+                </q-item-section>
+            </q-item> -->
+
+            <q-item to="/form">
+                <q-item-section top avatar>
+                    <q-avatar text-color="black" icon="assignment" />
+                </q-item-section>
+                <q-item-section>
+                    <q-item-label>Formulario</q-item-label>
+                    <q-item-label caption lines="2">Formulario</q-item-label>
                 </q-item-section>
             </q-item>
         </q-list>

@@ -24,6 +24,14 @@ const routes = [
         ]
     },
 
+    {
+        path: '/form',
+        component: () => import('layouts/MainLayout.vue'),
+        children: [
+            { path: '', component: () => import('pages/Form.vue') }
+        ]
+    },
+
 ]
   
 // Always leave this as last one
