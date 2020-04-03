@@ -103,6 +103,7 @@
 <script>
 import {LMap, LTileLayer, LCircle, LMarker, LIcon} from 'vue2-leaflet';
 import { db } from 'boot/firebase'
+import store from "../store";
 
 export default {
     components: {
@@ -142,6 +143,12 @@ export default {
             },
 
             iconSize: 16
+        }
+    },
+
+    created(){
+        if(this.$store.state.user.user.userType !== 'admin'){
+            this.$router.push({ name: 'error' }).catch(e => {})
         }
     },
 

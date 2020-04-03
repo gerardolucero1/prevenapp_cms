@@ -34,7 +34,7 @@
                 >
                 Menu
             </q-item-label>
-            <q-item to="/home">
+            <q-item to="/home" v-if="user.user.userType == 'admin'">
                 <q-item-section top avatar>
                     <q-avatar text-color="black" icon="dashboard" />
                 </q-item-section>
@@ -44,7 +44,7 @@
                 </q-item-section>
             </q-item>
 
-            <q-item to="/users">
+            <q-item to="/users" v-if="user.user.userType == 'admin'">
                 <q-item-section top avatar>
                     <q-avatar text-color="black" icon="supervisor_account" />
                 </q-item-section>
@@ -54,7 +54,7 @@
                 </q-item-section>
             </q-item>
 
-            <q-item to="/state">
+            <q-item to="/state" v-if="user.user.userType == 'admin'">
                 <q-item-section top avatar>
                     <q-avatar text-color="black" icon="bar_chart" />
                 </q-item-section>
@@ -64,7 +64,7 @@
                 </q-item-section>
             </q-item>
 
-            <q-item to="/calls">
+            <q-item to="/calls" v-if="user.user.userType == 'admin'">
                 <q-item-section top avatar>
                     <q-avatar text-color="black" icon="explore" />
                 </q-item-section>
@@ -74,23 +74,33 @@
                 </q-item-section>
             </q-item>
 
-            <!-- <q-item>
+            <q-item to="/tracing" v-if="user.user.userType == 'admin' || user.user.userType == 'seguimiento'">
                 <q-item-section top avatar>
-                    <q-avatar text-color="black" icon="explore" />
+                    <q-avatar text-color="black" icon="transfer_within_a_station" />
                 </q-item-section>
                 <q-item-section>
-                    <q-item-label>Global</q-item-label>
-                    <q-item-label caption lines="2">Informacion global</q-item-label>
+                    <q-item-label>Seguimiento</q-item-label>
+                    <q-item-label caption lines="2">Informacion de seguimiento</q-item-label>
                 </q-item-section>
-            </q-item> -->
+            </q-item>
 
-            <q-item to="/form">
+            <q-item to="/form" v-if="user.user.userType == 'admin' || user.user.userType == 'doctor'">
                 <q-item-section top avatar>
                     <q-avatar text-color="black" icon="assignment" />
                 </q-item-section>
                 <q-item-section>
                     <q-item-label>Formulario</q-item-label>
                     <q-item-label caption lines="2">Formulario</q-item-label>
+                </q-item-section>
+            </q-item>
+
+            <q-item>
+                <q-item-section top avatar>
+                    <q-avatar text-color="black" icon="exit_to_app" />
+                </q-item-section>
+                <q-item-section @click="exit">
+                    <q-item-label>Salir</q-item-label>
+                    <q-item-label caption lines="2">Cerrar sesion</q-item-label>
                 </q-item-section>
             </q-item>
         </q-list>
@@ -104,6 +114,8 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink'
+import { mapState } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: 'MainLayout',
@@ -115,44 +127,29 @@ export default {
   data () {
     return {
       leftDrawerOpen: false,
-      essentialLinks: [
-        {
-          title: 'Dashboard',
-          caption: 'Pagina inicial',
-          icon: 'school',
-          link: 'https://quasar.dev'
-        },
-        {
-          title: 'Github',
-          caption: 'github.com/quasarframework',
-          icon: 'code',
-          link: 'https://github.com/quasarframework'
-        },
-        {
-          title: 'Discord Chat Channel',
-          caption: 'chat.quasar.dev',
-          icon: 'chat',
-          link: 'https://chat.quasar.dev'
-        },
-        {
-          title: 'Forum',
-          caption: 'forum.quasar.dev',
-          icon: 'record_voice_over',
-          link: 'https://forum.quasar.dev'
-        },
-        {
-          title: 'Twitter',
-          caption: '@quasarframework',
-          icon: 'rss_feed',
-          link: 'https://twitter.quasar.dev'
-        },
-        {
-          title: 'Facebook',
-          caption: '@QuasarFramework',
-          icon: 'public',
-          link: 'https://facebook.quasar.dev'
-        }
-      ]
+    }
+  },
+
+  created(){
+    // if(this.$store.state.user.user == null){
+    //     this.$router.push({ path: '/' }).catch(e => {})
+    // }
+  },
+
+  computed: {
+      ...mapState([
+          'user',
+      ])
+  },
+
+  methods: {
+    ...mapActions([
+        'closeSesion',
+      ]),
+    
+    exit(){
+      this.$store.dispatch('user/closeSesion')
+      this.$router.push({ path: '/' })
     }
   }
 }

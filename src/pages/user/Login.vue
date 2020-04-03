@@ -33,6 +33,7 @@
 
 <script>
 import { auth, firebase, db } from 'boot/firebase'
+import { mapActions, mapMutations, mapState } from "vuex";
 
 export default {
     name: 'Login',
@@ -46,7 +47,12 @@ export default {
         }
     },
 
+    computed: {
+        ...mapState([ 'user' ])
+    },
+
     methods: {
+
         ingresar(metodo){
             switch (metodo) {
                 case 'email':
@@ -84,7 +90,8 @@ export default {
             auth.languageCode = 'es_MX'
             try{
                 let response = await auth.signInWithPopup(provider)
-                this.$router.push({ path: 'form' })
+                //console.log(response.user.uid)
+                this.getUser(response.user.uid)
             }
             catch(error){
                 console.log(error)
@@ -94,6 +101,7 @@ export default {
         async ingresarEmail(){
             try{
                 await auth.signInWithEmailAndPassword(this.formulario.email, this.formulario.password)
+
                 this.$router.push({ path: 'form' })
             }
             catch(error){
@@ -109,6 +117,36 @@ export default {
                 }
             }
         },
+
+        async getUser(uid){
+            try {
+                let response = await db.collection('users')
+                                        .doc(uid)
+                                        .get()
+
+                if(response.exists){
+                    this.$store.commit('user/updateUser', response.data())
+
+                    switch (this.user.user.userType) {
+                        case 'doctor':
+                            this.$router.push({ path: 'form' }).catch(e => {})
+                            break;
+                        case 'seguimiento':
+                            this.$router.push({ path: 'tracing' }).catch(e => {})
+                            break;
+                        case 'admin':
+                            this.$router.push({ path: 'home' }).catch(e => {})
+                            break;
+                    
+                        default:
+                            this.$router.push({ path: '/' }).catch(e => {})
+                            break;
+                    }
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
     }
 }
 </script>
