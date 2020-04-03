@@ -66,7 +66,7 @@
                 </section>
 
                 <section class="row">
-                    <div class="col" style="margin-top: 28px;">
+                    <div class="col-6" style="margin-top: 28px;">
                         <vue-google-autocomplete
                             class="search"
                             ref="address"
@@ -87,12 +87,13 @@
                     <div class="col-2">
                         <q-select v-model="generalData.etnia" :options="optionsEtnia" label="Etnia" Outlined />
                     </div>
-                    <div class="col-2">
-                        <q-input v-model="generalData.familyNumbers" type="number" label="No. Personas en el hogar" />
-                    </div>
+                    
                 </section>
 
                 <section class="row">
+                    <div class="col-3">
+                        <q-input v-model="generalData.familyNumbers" type="number" label="No. Personas en el hogar" />
+                    </div>
                     <div class="col-3">
                         <q-select v-model="generalData.medicalSecure" :options="optionsMedicalSecure" label="Servicio Médico" Outlined />
                     </div>
@@ -116,7 +117,7 @@
                     </div>
                     <div class="col-md-7" style="padding-top:130px">
                         <p style="font-size:20px; font-weight:bold; width:100%; text-align:center">Dictamen Recomendado por el sistema:</p>
-                        <p style="text-align:center; font-size:35px; width:100%; color:green" id="dictamenSistema">Sin Riesgo</p>
+                        <p style="text-align:center; font-size:35px; width:100%; color:green" id="dictamenSistema">{{dictamenCalculoSistema}}</p>
                         <p style="text-align:center; font-size:13px; width:100%; color:gray; font-style:italic;">El dictamen recomendado por el sistema esta basado únicamente en el numero de síntomas seleccionados, es por esto que el dictamen final queda completamente a criterio del médico que completa la información de este formulario</p>
                         
                     </div>
@@ -149,7 +150,7 @@
                         <q-btn color="primary" style="width: 100%;" icon="check" label="Guardar registro" @click="saveInformation" />
                     </div>
                     <div class="col-4 offset-2">
-                        <q-btn color="primary" style="width: 100%;" icon="check" label="Guardar registro" @click="cleanForm" />
+                        <q-btn color="red" style="width: 100%;" icon="remove" label="Descartar Registro" @click="cleanForm" />
                     </div>
                 </section>
             </div>
@@ -253,27 +254,28 @@ export default {
    
    
    computed:{
-       
-    },
-
-    methods: {
         dictamenCalculoSistema(){
-
+if(this.symptoms.length>1){
      if(this.symptoms.length>4 && this.symptoms.length<7){
          document.getElementById('dictamenSistema').style.color="orange";
-   document.getElementById('dictamenSistema').innerHTML="Sospechoso";
+   return "Sospechoso";
    }
    if(this.symptoms.length<=4){
        document.getElementById('dictamenSistema').style.color="green";
-document.getElementById('dictamenSistema').innerHTML="Sin Riesgo";
+   return "Sin Riesgo";
    }
    if(this.symptoms.length>=7){
        document.getElementById('dictamenSistema').style.color="red";
-  document.getElementById('dictamenSistema').innerHTML="Hospitalario";
+   return "Hospitalario";
    }
-        },
+}else{
+    return "Sin Riesgo";
+}
 
-        
+        }
+    },
+
+    methods: {
         getAddressData(addressData, placeResultData, id) {
             console.log(placeResultData)
             this.address = addressData;
@@ -337,6 +339,17 @@ document.getElementById('dictamenSistema').innerHTML="Sin Riesgo";
 
 
             }
+        },
+
+        async cleanForm(){
+           
+                this.generalData = '';
+                this.symptoms = '';
+                this.additionalFeatures = []
+                this.observations = ''
+                this.opinion = ''
+                this.direction = '';
+                alert('Registro Descartado');
         },
 
         async saveUbication(){
