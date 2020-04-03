@@ -64,12 +64,22 @@
                 </q-item-section>
             </q-item>
 
+            <q-item to="/registroscc">
+                <q-item-section top avatar>
+                    <q-avatar text-color="black" icon="supervisor_account" />
+                </q-item-section>
+                <q-item-section>
+                    <q-item-label>Seguimiento</q-item-label>
+                    <q-item-label caption lines="2">Lista de registros call center</q-item-label>
+                </q-item-section>
+            </q-item>
+
             <q-item to="/calls">
                 <q-item-section top avatar>
                     <q-avatar text-color="black" icon="explore" />
                 </q-item-section>
                 <q-item-section>
-                    <q-item-label>Registros</q-item-label>
+                    <q-item-label>Mapa Call Center</q-item-label>
                     <q-item-label caption lines="2">Informacion call center</q-item-label>
                 </q-item-section>
             </q-item>

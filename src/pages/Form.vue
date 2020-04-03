@@ -31,7 +31,7 @@
     <q-page>
         <section class="row" style="width: 90%; margin-left: 5%;">
             <div class="col-12 box">
-                <p class="title">Datos Generales</p>
+                <p class="title" style="background:#FAE586">Datos Generales</p>
                 <section class="row">
                     <div class="col">
                         <q-input v-model="generalData.name" type="text" label="Nombre" />
@@ -46,7 +46,7 @@
 
                 <section class="row">
                     <div class="col">
-                        <q-input v-model="generalData.birthdate" type="date" label="Fecha Nacimiento" Outlined />
+                        <q-input @blur="calcularEdad()" v-model="generalData.birthdate" type="date" label="Fecha Nacimiento" Outlined />
                     </div>
                     <div class="col-1">
                         <q-input v-model="generalData.age" type="number" label="Edad" />
@@ -88,7 +88,7 @@
                         <q-select v-model="generalData.etnia" :options="optionsEtnia" label="Etnia" Outlined />
                     </div>
                     <div class="col-2">
-                        <q-input v-model="generalData.familyNumbers" type="number" label="Nº Integrantes de Familia" />
+                        <q-input v-model="generalData.familyNumbers" type="number" label="No. Personas en el hogar" />
                     </div>
                 </section>
 
@@ -100,10 +100,10 @@
             </div>
 
             <div class="col-12 box">
-                <p class="title">Sintomatologia</p>
+                <p class="title" style="background:#FAE586">Sintomatologia</p>
 
                 <section class="row">
-                    <div class="col-12" style="display: flex; flex-direction: column;">
+                    <div class="col-5" style="display: flex; flex-direction: column;">
                         <q-checkbox right-label v-model="symptoms" val="Fiebre" label="Fiebre mayor a 38 grados" />
                         <q-checkbox right-label v-model="symptoms" val="Tos" label="Tos" />
                         <q-checkbox right-label v-model="symptoms" val="dolorCabeza" label="Dolor de cabeza" />
@@ -113,6 +113,12 @@
                         <q-checkbox right-label v-model="symptoms" val="conjuntivitis" label="Conjuntivitis" />
                         <q-checkbox right-label v-model="symptoms" val="dolorToraxico" label="Dolor torácico" />
                         <q-checkbox right-label v-model="symptoms" val="dolorFaringeo" label="Dolor faríngeo" />
+                    </div>
+                    <div class="col-md-7" style="padding-top:130px">
+                        <p style="font-size:20px; font-weight:bold; width:100%; text-align:center">Dictamen Recomendado por el sistema:</p>
+                        <p style="text-align:center; font-size:35px; width:100%; color:green" id="dictamenSistema">Sin Riesgo</p>
+                        <p style="text-align:center; font-size:13px; width:100%; color:gray; font-style:italic;">El dictamen recomendado por el sistema esta basado únicamente en el numero de síntomas seleccionados, es por esto que el dictamen final queda completamente a criterio del médico que completa la información de este formulario</p>
+                        
                     </div>
                     <div class="col-12">
                         <q-input v-model="observations" type="textarea" label="Observaciones" filled />
@@ -129,7 +135,7 @@
             </div>
 
             <div class="col-12 box">
-                <p class="title">Dictamen</p>
+                <p class="title" style="background:#FAE586">Dictamen</p>
                 <section class="row">
                     <div class="col-4">
                         <q-select v-model="opinion" :options="optionsOpinion" label="Dictamen" Outlined />
@@ -139,8 +145,11 @@
 
             <div class="col-12 box">
                 <section class="row">
-                    <div class="col-4 offset-4">
+                    <div class="col-4 offset-2">
                         <q-btn color="primary" style="width: 100%;" icon="check" label="Guardar registro" @click="saveInformation" />
+                    </div>
+                    <div class="col-4 offset-2">
+                        <q-btn color="primary" style="width: 100%;" icon="check" label="Guardar registro" @click="cleanForm" />
                     </div>
                 </section>
             </div>
@@ -241,8 +250,30 @@ export default {
     mounted() {
         this.$refs.address.focus();
     },
+   
+   
+   computed:{
+       
+    },
 
     methods: {
+        dictamenCalculoSistema(){
+
+     if(this.symptoms.length>4 && this.symptoms.length<7){
+         document.getElementById('dictamenSistema').style.color="orange";
+   document.getElementById('dictamenSistema').innerHTML="Sospechoso";
+   }
+   if(this.symptoms.length<=4){
+       document.getElementById('dictamenSistema').style.color="green";
+document.getElementById('dictamenSistema').innerHTML="Sin Riesgo";
+   }
+   if(this.symptoms.length>=7){
+       document.getElementById('dictamenSistema').style.color="red";
+  document.getElementById('dictamenSistema').innerHTML="Hospitalario";
+   }
+        },
+
+        
         getAddressData(addressData, placeResultData, id) {
             console.log(placeResultData)
             this.address = addressData;
@@ -255,6 +286,24 @@ export default {
             this.direction.origin.longitude = this.address.longitude
             this.direction.placeId = placeResultData.id
         },
+
+
+     calcularEdad() {
+    var hoy = new Date();
+    this.generalData.birthdate;
+    var cumpleanos = new Date(this.generalData.birthdate);
+    var edad = hoy.getFullYear() - cumpleanos.getFullYear();
+    var m = hoy.getMonth() - cumpleanos.getMonth();
+    
+
+    if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
+        edad--;
+    }
+    this.generalData.age=edad;
+   
+},
+
+    
 
         async saveInformation(){
             let setConfirm = confirm('La informacion es correcta')
@@ -274,17 +323,19 @@ export default {
                 let response = await db.collection('forms').doc().set(info)
 
                 this.saveUbication()
-                this.generalData = {}
+                this.generalData = '';
                 this.symptoms = []
                 this.additionalFeatures = []
                 this.observations = ''
                 this.opinion = ''
-                this.direction = {}
+                this.direction = '';
             } catch (error) {
                 console.log(error)
             }
             finally{
-                alert('Registro guardado')
+                alert('Registro guardado');
+
+
             }
         },
 

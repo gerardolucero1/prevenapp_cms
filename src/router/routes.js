@@ -25,6 +25,14 @@ const routes = [
     },
 
     {
+        path: '/registroscc',
+        component: () => import('layouts/MainLayout.vue'),
+        children: [
+            { path: '', component: () => import('pages/Registros.vue') }
+        ]
+    },
+
+    {
         path: '/state',
         component: () => import('layouts/MainLayout.vue'),
         children: [
