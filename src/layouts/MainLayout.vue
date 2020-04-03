@@ -40,7 +40,7 @@
                 </q-item-section>
                 <q-item-section>
                     <q-item-label>Dashboard</q-item-label>
-                    <q-item-label caption lines="2">Informacion general</q-item-label>
+                    <q-item-label caption lines="2">Información general</q-item-label>
                 </q-item-section>
             </q-item>
 
@@ -50,7 +50,7 @@
                 </q-item-section>
                 <q-item-section>
                     <q-item-label>Usuarios</q-item-label>
-                    <q-item-label caption lines="2">Informacion de usuarios</q-item-label>
+                    <q-item-label caption lines="2">Información de usuarios App</q-item-label>
                 </q-item-section>
             </q-item>
 
@@ -60,7 +60,7 @@
                 </q-item-section>
                 <q-item-section>
                     <q-item-label>Mapa App</q-item-label>
-                    <q-item-label caption lines="2">Informacion del estado</q-item-label>
+                    <q-item-label caption lines="2">Información Aplicación</q-item-label>
                 </q-item-section>
             </q-item>
 
@@ -70,7 +70,7 @@
                 </q-item-section>
                 <q-item-section>
                     <q-item-label>Registros</q-item-label>
-                    <q-item-label caption lines="2">Informacion de llamadas</q-item-label>
+                    <q-item-label caption lines="2">Informacion call center</q-item-label>
                 </q-item-section>
             </q-item>
 

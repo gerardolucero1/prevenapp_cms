@@ -27,7 +27,7 @@
     "vue2-leaflet": "^2.5.2"
   },
   "devDependencies": {
-    "@quasar/app": "^1.0.0"
+    "@quasar/app": "^1.6.1"
   },
   "engines": {
     "node": ">= 10.18.1",
