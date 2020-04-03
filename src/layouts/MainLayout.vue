@@ -59,8 +59,18 @@
                     <q-avatar text-color="black" icon="bar_chart" />
                 </q-item-section>
                 <q-item-section>
-                    <q-item-label>Estatal</q-item-label>
+                    <q-item-label>Mapa App</q-item-label>
                     <q-item-label caption lines="2">Informacion del estado</q-item-label>
+                </q-item-section>
+            </q-item>
+
+            <q-item to="/calls">
+                <q-item-section top avatar>
+                    <q-avatar text-color="black" icon="explore" />
+                </q-item-section>
+                <q-item-section>
+                    <q-item-label>Registros</q-item-label>
+                    <q-item-label caption lines="2">Informacion de llamadas</q-item-label>
                 </q-item-section>
             </q-item>
 
