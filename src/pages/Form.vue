@@ -72,14 +72,14 @@
                             ref="address"
                             id="map"
                             classname="form-control"
-                            placeholder="Direccion"
+                            placeholder="Dirección"
                             @placechanged="getAddressData"
                             country="mx"
                         >
                         </vue-google-autocomplete>
                     </div>
                     <div class="col-2">
-                        <q-input v-model="generalData.number" type="number" label="Numero" />
+                        <q-input v-model="generalData.number" type="number" label="Número" />
                     </div>
                     <div class="col-2">
                         <q-input v-model="generalData.cp" type="number" label="CP" />
@@ -94,7 +94,7 @@
 
                 <section class="row">
                     <div class="col-3">
-                        <q-select v-model="generalData.medicalSecure" :options="optionsMedicalSecure" label="Seguro Medico" Outlined />
+                        <q-select v-model="generalData.medicalSecure" :options="optionsMedicalSecure" label="Servicio Médico" Outlined />
                     </div>
                 </section>
             </div>
@@ -109,10 +109,10 @@
                         <q-checkbox right-label v-model="symptoms" val="dolorCabeza" label="Dolor de cabeza" />
                         <q-checkbox right-label v-model="symptoms" val="dificultadRespiratoria" label="Dificultad respiratoria" />
                         <q-checkbox right-label v-model="symptoms" val="dolorArticulaciones" label="Dolor en articulaciones" />
-                        <q-checkbox right-label v-model="symptoms" val="dolorMoscular" label="Dolor moscular" />
+                        <q-checkbox right-label v-model="symptoms" val="dolorMoscular" label="Dolor muscular" />
                         <q-checkbox right-label v-model="symptoms" val="conjuntivitis" label="Conjuntivitis" />
-                        <q-checkbox right-label v-model="symptoms" val="dolorToraxico" label="Dolor toraxico" />
-                        <q-checkbox right-label v-model="symptoms" val="dolorFaringeo" label="Dolor faringeo" />
+                        <q-checkbox right-label v-model="symptoms" val="dolorToraxico" label="Dolor torácico" />
+                        <q-checkbox right-label v-model="symptoms" val="dolorFaringeo" label="Dolor faríngeo" />
                     </div>
                     <div class="col-12">
                         <q-input v-model="observations" type="textarea" label="Observaciones" filled />
@@ -122,7 +122,7 @@
                         <q-checkbox right-label v-model="additionalFeatures" val="diabetes" label="Diabetes" />
                     </div>
                     <div class="col-4" style="display: flex; flex-direction: column;">
-                        <q-checkbox right-label v-model="additionalFeatures" val="cronicas" label="Cronicas" />
+                        <q-checkbox right-label v-model="additionalFeatures" val="cronicas" label="Crónicas" />
                         <q-checkbox right-label v-model="additionalFeatures" val="obesidad" label="Obesidad" />
                     </div>
                 </section>
@@ -184,6 +184,15 @@ export default {
                 medicalSecure: '',
             },
 
+            direction: {
+                name: '',
+                placeId: '',
+                origin: {
+                    latitude: '',
+                    longitude: '',
+                },
+            },
+
             optionsSex: [
                 'Masculino',
                 'Femenino'
@@ -198,14 +207,21 @@ export default {
             ],
 
             optionsEtnia: [
+                'Pimas',
+                'Guarijo',
+                'Tepehuanes',
                 'Tarahumara',
-                'Raramuri',
             ],
 
             optionsMedicalSecure: [
                 'INSABI',
                 'IMSS',
                 'ISSSTE',
+                'PRIVADO',
+                'IMPE',
+                'ICHISAL',
+                'PENSIONES',
+                'SEDENA',
             ],
 
             symptoms: [],
@@ -228,11 +244,16 @@ export default {
 
     methods: {
         getAddressData(addressData, placeResultData, id) {
-            console.log(placeResultData.formatted_address)
+            console.log(placeResultData)
             this.address = addressData;
             this.generalData.number = this.address.street_number
             this.generalData.cp = this.address.postal_code
             this.generalData.direction = placeResultData.formatted_address
+
+            this.direction.name = placeResultData.formatted_address
+            this.direction.origin.latitude = this.address.latitude
+            this.direction.origin.longitude = this.address.longitude
+            this.direction.placeId = placeResultData.id
         },
 
         async saveInformation(){
@@ -251,11 +272,29 @@ export default {
                 }
 
                 let response = await db.collection('forms').doc().set(info)
+
+                this.saveUbication()
+                this.generalData = {}
+                this.symptoms = []
+                this.additionalFeatures = []
+                this.observations = ''
+                this.opinion = ''
+                this.direction = {}
             } catch (error) {
                 console.log(error)
             }
             finally{
                 alert('Registro guardado')
+            }
+        },
+
+        async saveUbication(){
+            try {
+                let response = await db.collection('call_locations')
+                                            .doc(this.direction.placeId)
+                                            .set(this.direction)
+            } catch (error) {
+                console.log(error)
             }
         }
     }
