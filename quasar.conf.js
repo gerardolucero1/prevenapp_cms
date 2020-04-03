@@ -9,7 +9,9 @@ module.exports = function (ctx) {
     boot: [
       'axios',
       'firebase',
-      'leaflet'
+      'leaflet',
+      'sesion',
+      'router',
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css

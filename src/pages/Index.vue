@@ -78,6 +78,8 @@
 
 <script>
 import { db } from 'boot/firebase'
+import { mapState } from "vuex";
+import store from "../store";
 
 export default {
     name: 'Home',
@@ -86,6 +88,12 @@ export default {
         return{
             cases: ''
         }
+    },
+
+    computed: {
+        ...mapState([
+            'user'
+        ])
     },
 
     mounted(){

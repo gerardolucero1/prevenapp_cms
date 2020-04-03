@@ -150,6 +150,7 @@
 
 <script>
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
+import { mapState } from "vuex";
 
 //Firebase
 import { db } from 'boot/firebase'
@@ -240,6 +241,12 @@ export default {
 
     mounted() {
         this.$refs.address.focus();
+    },
+
+    computed: {
+        ...mapState([
+            'user'
+        ])
     },
 
     methods: {

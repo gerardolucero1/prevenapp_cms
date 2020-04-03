@@ -1,3 +1,5 @@
+import store from "../store";
+import state from "src/store/user/state";
 
 const routes = [
     {
@@ -13,7 +15,7 @@ const routes = [
         component: () => import('layouts/MainLayout.vue'),
         children: [
             { path: '', component: () => import('pages/Index.vue') }
-        ]
+        ],
     },
 
     {
@@ -41,12 +43,20 @@ const routes = [
     },
 
     {
+        path: '/tracing',
+        component: () => import('layouts/MainLayout.vue'),
+        children: [
+            { path: '', component: () => import('pages/Tracing.vue') }
+        ],
+    },
+
+    {
         path: '/form',
         name: 'formulario',
         component: () => import('layouts/MainLayout.vue'),
         children: [
             { path: '', component: () => import('pages/Form.vue') }
-        ]
+        ],
     },
 
 ]
@@ -55,6 +65,7 @@ const routes = [
 if (process.env.MODE !== 'ssr') {
     routes.push({
         path: '*',
+        name: 'error',
         component: () => import('pages/Error404.vue')
     })
 }
