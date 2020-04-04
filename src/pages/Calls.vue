@@ -66,6 +66,7 @@
 <script>
 import {LMap, LTileLayer, LCircle, LMarker, LIcon} from 'vue2-leaflet';
 import { db } from 'boot/firebase'
+import store from '../store'
 
 export default {
     components: {
