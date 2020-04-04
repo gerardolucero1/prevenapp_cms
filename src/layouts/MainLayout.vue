@@ -84,7 +84,7 @@
                 </q-item-section>
             </q-item>
 
-            <q-item to="/tracing" v-if="user.user.userType == 'admin' || user.user.userType == 'seguimiento'">
+            <q-item style="display:none" to="/tracing" v-if="user.user.userType == 'admin' || user.user.userType == 'seguimiento'">
                 <q-item-section top avatar>
                     <q-avatar text-color="black" icon="transfer_within_a_station" />
                 </q-item-section>
