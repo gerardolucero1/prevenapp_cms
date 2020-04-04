@@ -30,8 +30,17 @@
 <template>
     <q-page>
         <section class="row" style="width: 90%; margin-left: 5%;">
+           <div class="col-6">
+                        <q-btn color="primary" style="width: 100%;"  label="Anterior"  @click="anterior()"/>
+            </div>
+            <div class="col-6">
+                        <q-btn color="primary" style="width: 100%;"   label="Siguente" @click="siguiente()" />
+            </div>
+            
             <div class="col-12 box">
-                <p class="title" style="background:#FAE586">Datos Generales <span style="width:100%; font-weight:bold; text-aling:right; position:absolute; left:800px">Folio: 004</span></p>
+                <p id="fechaSeguimiento">Fecha de seguimiento Viernes 3 Abril 2020</p>
+                <p class="title" style="background:#FAE586">Datos Generales <span style="width:100%; font-weight:bold; text-aling:right; position:absolute; left:800px">Folio: 0036</span></p>
+                
                 <section class="row">
                     <div class="col">
                         <q-input v-model="generalData.name" type="text" label="Nombre" />
@@ -147,10 +156,10 @@
             <div class="col-12 box">
                 <section class="row">
                     <div class="col-4 offset-2">
-                        <q-btn color="primary" style="width: 100%;" icon="check" label="Guardar registro" @click="saveInformation" />
+                        <q-btn color="primary" style="width: 100%;" icon="check" label="Guardar Seguimiento" @click="saveInformation" />
                     </div>
                     <div class="col-4 offset-2">
-                        <q-btn color="red" style="width: 100%;" icon="remove" label="Descartar Registro" @click="cleanForm" />
+                        <q-btn color="red" style="width: 100%;" icon="remove" label="Descartar Caso" @click="cleanForm" />
                     </div>
                 </section>
             </div>
@@ -160,7 +169,6 @@
 
 <script>
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
-import { mapState } from "vuex";
 
 //Firebase
 import { db } from 'boot/firebase'
@@ -172,22 +180,22 @@ export default {
         return {
             address: '',
             generalData: {
-                name: '',
-                lastName: '',
-                secondLastName: '',
+                name: 'Samuel',
+                lastName: 'Acosta',
+                secondLastName: 'Rivera',
 
-                birthdate: '',
-                age: '',
+                birthdate: '07/09/1995',
+                age: '24',
 
-                sex: '',
-                telephone: '',
+                sex: 'Masculino',
+                telephone: '6391061558',
 
-                civilState: '',
-                cellular: '',
+                civilState: 'Soltero',
+                cellular: '6391061558',
 
-                direction: '',
-                number: '',
-                cp: '',
+                direction: 'Calle aquiles serdan 607 Francisco Villa 33080 Delicias, Chih, Mexico',
+                number: '607',
+                cp: '33080',
 
                 etnia: '',
 
@@ -218,6 +226,7 @@ export default {
             ],
 
             optionsEtnia: [
+                '',
                 'Pimas',
                 'Guarijo',
                 'Tepehuanes',
@@ -225,6 +234,7 @@ export default {
             ],
 
             optionsMedicalSecure: [
+                'NINGUNO',
                 'INSABI',
                 'IMSS',
                 'ISSSTE',
@@ -251,7 +261,10 @@ export default {
 
     mounted() {
         this.$refs.address.focus();
+
+        //this.$router.props;
     },
+   
    
    
    computed:{
@@ -276,12 +289,6 @@ if(this.symptoms.length>1){
         }
     },
 
-    computed: {
-        ...mapState([
-            'user'
-        ])
-    },
-
     methods: {
         getAddressData(addressData, placeResultData, id) {
             console.log(placeResultData)
@@ -296,6 +303,14 @@ if(this.symptoms.length>1){
             this.direction.placeId = placeResultData.id
         },
 
+    anterior(){
+ document.getElementById('fechaSeguimiento').innerHTML="Fecha de seguimiento Viernes 2 Abril 2020";
+ 
+    },
+    siguiente(){
+ document.getElementById('fechaSeguimiento').innerHTML="Fecha de seguimiento Viernes 3 Abril 2020";
+  
+    },
 
      calcularEdad() {
     var hoy = new Date();
@@ -315,7 +330,7 @@ if(this.symptoms.length>1){
     
 
         async saveInformation(){
-            let setConfirm = confirm('La informacion es correcta')
+            let setConfirm = confirm('¿La información ingresada es correcta?')
             if(!setConfirm){
                 return
             }
@@ -342,7 +357,7 @@ if(this.symptoms.length>1){
                 console.log(error)
             }
             finally{
-                alert('Registro guardado');
+                alert('Seguimiento Guardado');
 
 
             }
@@ -356,7 +371,7 @@ if(this.symptoms.length>1){
                 this.observations = ''
                 this.opinion = ''
                 this.direction = '';
-                alert('Registro Descartado');
+                alert('Registro de seguimiento descartado');
         },
 
         async saveUbication(){

@@ -27,6 +27,14 @@ const routes = [
     },
 
     {
+        path: '/registroscc',
+        component: () => import('layouts/MainLayout.vue'),
+        children: [
+            { path: '', component: () => import('pages/Registros.vue') }
+        ]
+    },
+
+    {
         path: '/state',
         component: () => import('layouts/MainLayout.vue'),
         children: [
@@ -57,6 +65,15 @@ const routes = [
         children: [
             { path: '', component: () => import('pages/Form.vue') }
         ],
+    },
+    {
+        path: '/form2',
+        props:{default:true},
+        name: 'formulario2',
+        component: () => import('layouts/MainLayout.vue'),
+        children: [
+            { path: '', component: () => import('pages/Form2.vue') }
+        ]
     },
 
 ]

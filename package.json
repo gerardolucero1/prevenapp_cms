@@ -13,11 +13,11 @@
     "deploy": "now"
   },
   "dependencies": {
-    "@quasar/extras": "^1.0.0",
+    "@quasar/extras": "^1.6.1",
     "axios": "^0.18.1",
     "connect-history-api-fallback": "^1.6.0",
     "express": "^4.17.1",
-    "firebase": "^7.13.1",
+    "firebase": "^7.13.2",
     "leaflet": "^1.6.0",
     "qrcode": "^1.4.4",
     "quasar": "^1.9.12",
@@ -27,7 +27,8 @@
     "vue2-leaflet": "^2.5.2"
   },
   "devDependencies": {
-    "@quasar/app": "^1.0.0"
+    "@quasar/app": "^1.6.1",
+    "webpack": "^4.42.1"
   },
   "engines": {
     "node": ">= 10.18.1",
