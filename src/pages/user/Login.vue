@@ -84,7 +84,7 @@ export default {
             }
         },
 
-        async ingresarGoogle(){
+        /*async ingresarGoogle(){
             
             let provider = new firebase.auth.GoogleAuthProvider()
             provider.setCustomParameters({
@@ -101,7 +101,44 @@ export default {
             catch(error){
                 console.log(error)
             }
+        },*/
+
+        async ingresarGoogle(){
+            try{
+                let response = await firebase.login({
+                    type: firebase.LoginType.GOOGLE,
+                })
+
+                if(response){
+                    console.log(JSON.stringify(response.additionalUserInfo.isNewUser))
+
+                    if(response.additionalUserInfo.isNewUser){
+
+                        let user = {
+                            uid: response.uid,
+                            name: response.displayName,
+                            email: response.additionalUserInfo.profile.email,
+                            infection: false,
+                            userType: 'user',
+                            terms: false,
+                        }
+                        document.getElementById('accesoGoogle').style.display="none";
+                document.getElementById('btnAccesar').style.display="block";
+
+                        await firebase.firestore.collection('users').doc(user.uid).set(user)
+                        this.getUserWelcome()
+                        //await firebase.firestore.collection('user_locations').doc(user.uid).set(locations)
+                    }
+
+                    this.getUser(response.uid)
+                }
+            }
+            catch(e){
+                console.log(e)
+            }
         },
+
+
         accesar(){
              window.location.replace("https://prevenapp-cms.now.sh/#/form");
         },
