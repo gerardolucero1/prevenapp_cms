@@ -6,7 +6,7 @@
                     <p style="margin-top: 10px; font-size: 22px;">LOGIN</p>
                 </section>
 
-                <section class="row" style="display:none">
+                <section class="row">
                     <div class="col-12">
                         <q-input 
                             v-model="formulario.email" 
