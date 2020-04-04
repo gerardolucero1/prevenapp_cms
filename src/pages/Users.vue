@@ -44,6 +44,7 @@
                             
                             <q-btn style="margin-top: 10px;" color="primary" label="Registro de llamadas" @click="updateStatusDoctor" />
                             <q-btn style="margin-top: 10px;" color="primary" label="Seguimiento de pacientes" @click="updateStatusSeguimiento" />
+                            <q-btn style="margin-top: 10px;" color="primary" label="Administrador CRM" @click="updateStatusAdmin" />
                         </div>
                     </section>
                     <section class="row">
@@ -182,6 +183,13 @@ export default {
                 this.updateStatusUserDoctor()
             }
         },
+        updateStatusAdmin(){
+            let changeStatus = confirm('¿Seguro quieres actualizar el rol de este usuario?')
+            
+            if(changeStatus){
+                this.updateStatusUserAdmin()
+            }
+        },
 
         updateStatusSeguimiento(){
             let changeStatus = confirm('¿Seguro quieres actualizar el rol de este usuario?')
@@ -211,6 +219,21 @@ export default {
                 let response = await db.collection('users')
                                         .doc(this.userSelect.uid)
                                         .update({ userType: 'doctor' })
+
+                this.getUsers()
+
+                
+
+            } catch (error) {
+                console.log(error)
+            }
+        },
+
+        async updateStatusUserAdmin(){
+            try {
+                let response = await db.collection('users')
+                                        .doc(this.userSelect.uid)
+                                        .update({ userType: 'admin' })
 
                 this.getUsers()
 
