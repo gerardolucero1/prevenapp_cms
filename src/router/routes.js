@@ -56,6 +56,15 @@ const routes = [
             { path: '', component: () => import('pages/Form.vue') }
         ]
     },
+    {
+        path: '/form2',
+        props:{default:true},
+        name: 'formulario2',
+        component: () => import('layouts/MainLayout.vue'),
+        children: [
+            { path: '', component: () => import('pages/Form2.vue') }
+        ]
+    },
 
 ]
   

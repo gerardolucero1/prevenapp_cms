@@ -59,7 +59,7 @@
                                 <li v-if="userSelectSymptoms['8']!=undefined">{{userSelectSymptoms['8']}}</li>
                             </ul>
 
-                            <q-btn style="margin-top: 10px;" color="primary" label="Seguimiento" />
+                            <q-btn style="margin-top: 10px;" color="primary" @click="goToForm()" label="Seguimiento" />
                         </div>
                     </section>
                     <section class="row">
@@ -118,6 +118,7 @@ export default {
             search: '',
             users: [],
             userSelect: '',
+            id:'',
             userSelectStatus: '',
             userSelectSymptoms: '',
 
@@ -173,8 +174,18 @@ export default {
                 console.log(error)
             }
         },
+        goToForm(){
+            this.$router.push({
+                path: 'form2',params:{
+                    id:this.id,
+                    }
+            })
+        },
 
         getUser(args, position){
+            //console.log(index);
+        
+            this.id=args.row.id;
             this.userSelect = args.row.generalData
             this.userSelectStatus = args.row.opinion
             this.userSelectSymptoms = args.row.symptoms
