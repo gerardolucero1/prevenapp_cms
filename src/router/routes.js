@@ -1,29 +1,41 @@
-import store from "../store";
-import state from "src/store/user/state";
-
 const routes = [
     {
         path: '/',
         component: () => import('layouts/AppLayout.vue'),
         children: [
-            { path: '', component: () => import('pages/user/Login.vue') }
-        ]
+            {   
+                name: 'Login',
+                path: '', component: () => import('pages/user/Login.vue')
+            }
+        ],
     },
 
     {
         path: '/home',
         component: () => import('layouts/MainLayout.vue'),
         children: [
-            { path: '', component: () => import('pages/Index.vue') }
+            { 
+                name: 'Home',
+                path: '', component: () => import('pages/Index.vue') 
+            }
         ],
+        meta: {
+            autenticated: true,
+        }
     },
 
     {
         path: '/users',
         component: () => import('layouts/MainLayout.vue'),
         children: [
-            { path: '', component: () => import('pages/Users.vue') }
-        ]
+            { 
+                name: 'Users',
+                path: '', component: () => import('pages/Users.vue') 
+            }
+        ],
+        meta: {
+            autenticated: true,
+        }
     },
 
     {
@@ -38,33 +50,81 @@ const routes = [
         path: '/state',
         component: () => import('layouts/MainLayout.vue'),
         children: [
-            { path: '', component: () => import('pages/Estate.vue') }
-        ]
+            { 
+                name: 'Map',
+                path: '', component: () => import('pages/Estate.vue') 
+            }
+        ],
+        meta: {
+            autenticated: true,
+        }
     },
 
     {
         path: '/calls',
         component: () => import('layouts/MainLayout.vue'),
         children: [
-            { path: '', component: () => import('pages/Calls.vue') }
-        ]
+            { 
+                name: 'Calls',
+                path: '', component: () => import('pages/Calls.vue') 
+            }
+        ],
+        meta: {
+            autenticated: true,
+        }
     },
 
     {
         path: '/tracing',
         component: () => import('layouts/MainLayout.vue'),
         children: [
-            { path: '', component: () => import('pages/Tracing.vue') }
+            { 
+                name: 'Tracing',
+                path: '', component: () => import('pages/Tracing.vue') 
+            }
         ],
+        meta: {
+            autenticated: true,
+        }
     },
 
     {
         path: '/form',
-        name: 'formulario',
         component: () => import('layouts/MainLayout.vue'),
         children: [
-            { path: '', component: () => import('pages/Form.vue') }
+            { 
+                name: 'Form',
+                path: '', component: () => import('pages/Form.vue') 
+            }
         ],
+        meta: {
+            autenticated: true,
+        }
+    },
+
+    {
+        path: '/register',
+        component: () => import('layouts/AppLayout.vue'),
+        children: [
+            {   
+                name: 'Register',
+                path: '', component: () => import('pages/user/Register.vue')
+            }
+        ],
+    },
+
+    {
+        path: '/error',
+        component: () => import('layouts/AppLayout.vue'),
+        children: [
+            {   
+                name: 'Error',
+                path: '', component: () => import('pages/user/Error.vue')
+            }
+        ],
+        meta: {
+            autenticated: true,
+        }
     },
     {
         path: '/form2',
@@ -82,7 +142,6 @@ const routes = [
 if (process.env.MODE !== 'ssr') {
     routes.push({
         path: '*',
-        name: 'error',
         component: () => import('pages/Error404.vue')
     })
 }
