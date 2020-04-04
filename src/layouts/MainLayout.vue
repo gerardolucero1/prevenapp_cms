@@ -94,7 +94,7 @@
                 </q-item-section>
             </q-item>
 
-            <q-item>
+            <q-item style="cursor: pointer;">
                 <q-item-section top avatar>
                     <q-avatar text-color="black" icon="exit_to_app" />
                 </q-item-section>
@@ -131,9 +131,7 @@ export default {
   },
 
   created(){
-    // if(this.$store.state.user.user == null){
-    //     this.$router.push({ path: '/' }).catch(e => {})
-    // }
+
   },
 
   computed: {
