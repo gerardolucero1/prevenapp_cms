@@ -20,7 +20,7 @@
     "firebase": "^7.13.2",
     "leaflet": "^1.6.0",
     "qrcode": "^1.4.4",
-    "quasar": "^1.9.12",
+    "quasar": "^1.9.13",
     "serve-static": "^1.14.1",
     "vue-google-autocomplete": "^1.1.0",
     "vue-qr": "^2.2.1",
