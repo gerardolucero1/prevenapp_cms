@@ -38,7 +38,7 @@
             </div>
             
             <div class="col-12 box">
-                <p id="fechaSeguimiento">Fecha de seguimiento Viernes 3 Abril 2020</p>
+                <p id="fechaSeguimiento">Fecha de seguimiento Lunes 6 Abril 2020</p>
                 <p class="title" style="background:#FAE586">Datos Generales <span style="width:100%; font-weight:bold; text-aling:right; position:absolute; left:800px">Folio: 0036</span></p>
                 
                 <section class="row">
@@ -199,8 +199,8 @@ export default {
 
                 etnia: '',
 
-                familyNumbers: '',
-                medicalSecure: '',
+                familyNumbers: '2',
+                medicalSecure: 'IMSS',
             },
 
             direction: {
@@ -245,7 +245,7 @@ export default {
                 'SEDENA',
             ],
 
-            symptoms: [],
+            symptoms: ['Fiebre'],
             observations: '',
             additionalFeatures: [],
 
@@ -262,7 +262,7 @@ export default {
     mounted() {
         this.$refs.address.focus();
 
-        //this.$router.props;
+        //alert(this.$router.id);
     },
    
    
@@ -304,11 +304,11 @@ if(this.symptoms.length>1){
         },
 
     anterior(){
- document.getElementById('fechaSeguimiento').innerHTML="Fecha de seguimiento Viernes 2 Abril 2020";
+ document.getElementById('fechaSeguimiento').innerHTML="Fecha de seguimiento Domingo 5 Abril 2020";
  
     },
     siguiente(){
- document.getElementById('fechaSeguimiento').innerHTML="Fecha de seguimiento Viernes 3 Abril 2020";
+ document.getElementById('fechaSeguimiento').innerHTML="Fecha de seguimiento Lunes 6 Abril 2020";
   
     },
 
@@ -357,7 +357,7 @@ if(this.symptoms.length>1){
                 console.log(error)
             }
             finally{
-                alert('Seguimiento Guardado');
+                alert('Solo puedes dar seguimiento minimo un dia despues del registro');
 
 
             }

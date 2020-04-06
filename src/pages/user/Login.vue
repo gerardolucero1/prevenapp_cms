@@ -44,8 +44,8 @@
                 </section>
 
                 <section class="row" style="display: flex; justify-content: center; flex-direction: column;">
-                    <q-btn style="margin-top: 10px;" color="primary" label="Facebook" @click="ingresarFacebook" />
-                    <q-btn style="margin-top: 10px;" color="negative" label="Google" @click="ingresarGoogle" />
+                    <q-btn style="margin-top: 10px; display:none" color="primary" label="Facebook" @click="ingresarFacebook" />
+                    <q-btn style="margin-top: 10px;" color="negative" label="Google" @click="createGoogle" />
                 </section>
 
                 <section class="row" style="display: flex; justify-content: center; flex-direction: column;">
@@ -135,6 +135,42 @@ export default {
             })
             auth.languageCode = 'es_MX'
 
+            try{
+                let response = await auth.signInWithPopup(provider)
+
+                if(response){
+                    console.log(JSON.stringify(response.additionalUserInfo.isNewUser))
+                    console.log(response.user.uid)
+
+                    if(response.additionalUserInfo.isNewUser){
+
+                        let user = {
+                            uid: response.user.uid,
+                            name: response.user.displayName,
+                            email: response.additionalUserInfo.profile.email,
+                            infection: false,
+                            userType: 'user',
+                            terms: false,
+                        }
+
+                        await db.collection('users').doc(user.uid).set(user)
+                    }
+
+                    this.$store.dispatch('user/getSesion', response.user.uid)
+
+                }
+
+            }
+            catch(error){
+                console.log(error)
+            }
+        },
+        async createGoogle(){
+            let provider = new firebase.auth.GoogleAuthProvider()
+            provider.setCustomParameters({
+                'display': 'popup'
+            })
+            auth.languageCode = 'es_MX'
             try{
                 let response = await auth.signInWithPopup(provider)
 

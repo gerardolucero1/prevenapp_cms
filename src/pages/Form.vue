@@ -31,7 +31,7 @@
     <q-page>
         <section class="row" style="width: 90%; margin-left: 5%;">
             <div class="col-12 box">
-                <p class="title" style="background:#FAE586">Datos Generales <span style="width:100%; font-weight:bold; text-aling:right; position:absolute; left:800px">Folio: 004</span></p>
+                <p class="title" style="background:#FAE586">Datos Generales <span style="width:100%; font-weight:bold; text-aling:right; position:absolute; left:800px">Folio: {{folio}}</span></p>
                 <section class="row">
                     <div class="col">
                         <q-input v-model="generalData.name" type="text" label="Nombre" />
@@ -46,7 +46,8 @@
 
                 <section class="row">
                     <div class="col">
-                        <q-input @blur="calcularEdad()" v-model="generalData.birthdate" type="date" label="Fecha Nacimiento" Outlined />
+                        <q-label style="font-size:13px; color:gray; position:absolute">Fecha de Nacimiento</q-label>
+                        <q-input @blur="calcularEdad()" v-model="generalData.birthdate" type="date" label="" Outlined />
                     </div>
                     <div class="col-1">
                         <q-input v-model="generalData.age" type="number" label="Edad" />
@@ -112,8 +113,10 @@
                         <q-checkbox right-label v-model="symptoms" val="dolorArticulaciones" label="Dolor en articulaciones" />
                         <q-checkbox right-label v-model="symptoms" val="dolorMoscular" label="Dolor muscular" />
                         <q-checkbox right-label v-model="symptoms" val="conjuntivitis" label="Conjuntivitis" />
-                        <q-checkbox right-label v-model="symptoms" val="dolorToraxico" label="Dolor torácico" />
+                        <q-checkbox right-label v-model="symptoms" val="dolorToracico" label="Dolor torácico" />
                         <q-checkbox right-label v-model="symptoms" val="dolorFaringeo" label="Dolor faríngeo" />
+                        <q-checkbox right-label v-model="symptoms" val="diarrea" label="Diarrea" />
+                        <q-checkbox right-label v-model="symptoms" val="malestarGeneral" label="Malestar General" />
                     </div>
                     <div class="col-md-7" style="padding-top:130px">
                         <p style="font-size:20px; font-weight:bold; width:100%; text-align:center">Dictamen Recomendado por el sistema:</p>
@@ -141,6 +144,9 @@
                     <div class="col-4">
                         <q-select v-model="opinion" :options="optionsOpinion" label="Dictamen" Outlined />
                     </div>
+                    <div class="col-4">
+                        <q-label style="font-style:italic">*Recuerda no generar pánico, debes reforzarle las medidas de prevención por su sintomatología.</q-label>
+                    </div>
                 </section>
             </div>
 
@@ -160,7 +166,6 @@
 
 <script>
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
-import { mapState } from "vuex";
 
 //Firebase
 import { db } from 'boot/firebase'
@@ -190,6 +195,7 @@ export default {
                 cp: '',
 
                 etnia: '',
+                numFolio:'',
 
                 familyNumbers: '',
                 medicalSecure: '',
@@ -273,13 +279,11 @@ if(this.symptoms.length>1){
     return "Sin Riesgo";
 }
 
-        }
-    },
+        },
 
-    computed: {
-        ...mapState([
-            'user'
-        ])
+        folio(){
+            return (Math.floor(Math.random() * (10000 - 1000)) + 1000);
+        }
     },
 
     methods: {
@@ -326,7 +330,8 @@ if(this.symptoms.length>1){
                     symptoms: this.symptoms,
                     additionalFeatures: this.additionalFeatures,
                     observations: this.observations,
-                    opinion: this.opinion
+                    opinion: this.opinion,
+                  
                 }
 
                 let response = await db.collection('forms').doc().set(info)
@@ -343,7 +348,7 @@ if(this.symptoms.length>1){
             }
             finally{
                 alert('Registro guardado');
-
+                
 
             }
         },

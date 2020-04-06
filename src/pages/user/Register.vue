@@ -57,7 +57,7 @@
                 </section>
 
                 <section class="row" style="display: flex; justify-content: center; flex-direction: column;">
-                    <q-btn style="margin-top: 10px;" color="primary" label="Facebook" @click="createFacebook" />
+                    <q-btn style="margin-top: 10px; display:none" color="primary" label="Facebook" @click="createFacebook" />
                     <q-btn style="margin-top: 10px;" color="negative" label="Google" @click="createGoogle" />
                 </section>
 

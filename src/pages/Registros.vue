@@ -60,6 +60,7 @@
                             </ul>
 
                             <q-btn style="margin-top: 10px;" color="primary" @click="goToForm()" label="Seguimiento" />
+                            
                         </div>
                     </section>
                     <section class="row">
@@ -175,9 +176,10 @@ export default {
             }
         },
         goToForm(){
+            alert(this.userSelect.name);
             this.$router.push({
                 path: 'form2',params:{
-                    id:this.id,
+                    id:this.userSelectStatus,
                     }
             })
         },
