@@ -98,6 +98,9 @@
                     <div class="col-3">
                         <q-select v-model="generalData.medicalSecure" :options="optionsMedicalSecure" label="Servicio Médico" Outlined />
                     </div>
+                    <div class="col-4">
+                        <q-select v-model="generalData.lugarResidencia" :options="optionsLugarResidencia" label="Lugar de residencia y trabajo"></q-select>
+                    </div>
                 </section>
             </div>
 
@@ -120,8 +123,8 @@
                     </div>
                     <div class="col-md-7" style="padding-top:130px">
                         <p style="font-size:20px; font-weight:bold; width:100%; text-align:center">Dictamen Recomendado por el sistema:</p>
-                        <p style="text-align:center; font-size:35px; width:100%; color:green" id="dictamenSistema">{{dictamenCalculoSistema}}</p>
-                        <p style="text-align:center; font-size:13px; width:100%; color:gray; font-style:italic;">El dictamen recomendado por el sistema esta basado únicamente en el numero de síntomas seleccionados, es por esto que el dictamen final queda completamente a criterio del médico que completa la información de este formulario</p>
+                        <p style="text-align:center; font-size:35px; width:100%; color:blue" id="dictamenSistema">{{calculoPuntosDictamen}}</p>
+                        <p style="text-align:center; font-size:13px; width:100%; color:gray; font-style:italic;" id="textoDictamen">El dictamen recomendado por el sistema esta basado únicamente en el numero de síntomas seleccionados, es por esto que el dictamen final queda completamente a criterio del médico que completa la información de este formulario</p>
                         
                     </div>
                     <div class="col-12">
@@ -144,18 +147,21 @@
                     <div class="col-4">
                         <q-select v-model="opinion" :options="optionsOpinion" label="Dictamen" Outlined />
                     </div>
-                    <div class="col-4">
-                        <q-label style="font-style:italic">*Recuerda no generar pánico, debes reforzarle las medidas de prevención por su sintomatología.</q-label>
+                    <div class="col-6">
+                        <q-label style="font-style:italic">{{cambioDictamen}}</q-label>
                     </div>
                 </section>
             </div>
 
             <div class="col-12 box">
                 <section class="row">
-                    <div class="col-4 offset-2">
+                    <div v-if="symptoms.length>0" class="col-4 ">
                         <q-btn color="primary" style="width: 100%;" icon="check" label="Guardar registro" @click="saveInformation" />
                     </div>
-                    <div class="col-4 offset-2">
+                    <div v-if="symptoms.length==0" class="col-4 ">
+                        <q-btn color="primary" style="width: 100%;" icon="check" label="Consulta Psicologica" @click="saveInformationPsicologico" />
+                    </div>
+                    <div class="col-4 ">
                         <q-btn color="red" style="width: 100%;" icon="remove" label="Descartar Registro" @click="cleanForm" />
                     </div>
                 </section>
@@ -181,14 +187,18 @@ export default {
                 lastName: '',
                 secondLastName: '',
 
+                lugarResidencia:'',
+
                 birthdate: '',
                 age: '',
+                folio:'',
 
                 sex: '',
                 telephone: '',
 
                 civilState: '',
                 cellular: '',
+                fechaActual: '',
 
                 direction: '',
                 number: '',
@@ -221,6 +231,12 @@ export default {
                 'Divorciado',
                 'Viudo',
                 'Union Libre'
+            ],
+
+            optionsLugarResidencia: [
+                'Acilo Para Ancianos o Casa de Asistencia',
+                'Trabajador en el Area de la Salud',
+                'Casa Habitacion Familiar o Propia',
             ],
 
             optionsEtnia: [
@@ -261,32 +277,104 @@ export default {
    
    
    computed:{
-        dictamenCalculoSistema(){
-if(this.symptoms.length>1){
-     if(this.symptoms.length>4 && this.symptoms.length<7){
-         document.getElementById('dictamenSistema').style.color="orange";
-   return "Sospechoso";
-   }
-   if(this.symptoms.length<=4){
-       document.getElementById('dictamenSistema').style.color="green";
-   return "Sin Riesgo";
-   }
-   if(this.symptoms.length>=7){
-       document.getElementById('dictamenSistema').style.color="red";
-   return "Hospitalario";
-   }
-}else{
-    return "Sin Riesgo";
-}
 
+       cambioDictamen(){
+            switch(this.opinion){
+                case 'Sin riesgo':
+                    return '*Aislamiento de casa, medidas estándar';
+                    break;
+                case 'Sospechoso':
+                    return 'Alta probabilidad de complicación, aislamiento estricto en casa (solo salir para acudir al medico) de ser posible la persona debe tener una habitación, baño y articulos personales exclusivos, no acudir al trabajo, escuela o áreas públicas en ninguna circunstancia, no usar transporte público ni compartir vehículo, acudir al servicio medico si los sintomas empeoran o presenta dificultad para respirar, dolor y/o presión en el pecho, síntomas de baja presión o cianosis peribucal y/o en lechos ungueales de las extremidades';
+                    break;
+                case 'Hospitalario':
+                    return 'Referencia a segundo nivel de atención, de ser posible contacte a la unidad a la que se referirá el paciente por teléfono y notifique que se envia paciente grave con probable COVID-19.';
+                    break;
+            }
+        },
+        
+        calculoPuntosDictamen(){
+            let puntos = 0;
+            if(this.generalData.age>35 && this.generalData.age<=64){
+                puntos = puntos + 2;
+            }else if(this.generalData.age>=65){
+                puntos = puntos + 5;
+            }else{
+                puntos = puntos + 0;
+            }
+
+            if(this.generalData.lugarResidencia == 'Acilo Para Ancianos o Casa de Asistencia' || this.generalData.lugarResidencia == 'Trabajador en el Area de la Salud'){
+                puntos = puntos + 5;
+            }
+            if(this.symptoms.includes('Fiebre')) {
+                puntos = puntos + 3;
+            }
+            if(this.symptoms.includes('Tos')) {
+                puntos = puntos + 3;
+            }
+            if(this.symptoms.includes('dolorCabeza')) {
+                puntos = puntos + 3;
+            }
+            if(this.symptoms.includes('dificultadRespiratoria')) {
+                puntos = puntos + 1;
+            }
+            if(this.symptoms.includes('dolorArticulaciones')) {
+                puntos = puntos + 1;
+            }
+            if(this.symptoms.includes('dolorMuscular')) {
+                puntos = puntos + 1;
+            }
+            if(this.symptoms.includes('conjuntivitis')) {
+                puntos = puntos + 1;
+            }
+            if(this.symptoms.includes('dolorToracico')) {
+                puntos = puntos + 1;
+            }
+            if(this.symptoms.includes('dolorFaringeo')) {
+                puntos = puntos + 1;
+            }
+            if(this.symptoms.includes('diarrea')) {
+                puntos = puntos + 1;
+            }
+            if(this.symptoms.includes('malestarGeneral')) {
+                puntos = puntos + 1;
+            }
+            if(this.additionalFeatures.includes('embarazada')) {
+                puntos = puntos + 5;
+            }
+            if(this.additionalFeatures.includes('diabetes')) {
+                puntos = puntos + 5;
+            }
+            if(this.additionalFeatures.includes('cronicas')) {
+                puntos = puntos + 5;
+            }
+            if(this.additionalFeatures.includes('obesidad')) {
+                puntos = puntos + 5;
+            }
+
+
+            if(puntos<=20){
+                return 'Bajo Riesgo (Sin Riesgo)'; 
+                //document.getElementById('dictamenSistema').style.color="green";
+            }
+            if(puntos>20 && puntos<=35){
+                return 'Riesgo Moderado (Sospechoso)';
+                //document.getElementById('dictamenSistema').style.color="orange";
+            }
+            if(puntos>35){
+                return 'Alto Riesgo (Hospitalario)';
+                //document.getElementById('dictamenSistema').style.color="red";
+            }
         },
 
         folio(){
-            return (Math.floor(Math.random() * (10000 - 1000)) + 1000);
+            let numberFolio = (Math.floor(Math.random() * (10000 - 1000)) + 1000);
+            this.generalData.folio=numberFolio;
+            return numberFolio;
         }
     },
 
     methods: {
+        
         getAddressData(addressData, placeResultData, id) {
             console.log(placeResultData)
             this.address = addressData;
@@ -319,7 +407,13 @@ if(this.symptoms.length>1){
     
 
         async saveInformation(){
-            let setConfirm = confirm('La informacion es correcta')
+            //generar fecha
+            var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
+var f=new Date();
+this.generalData.fechaActual = diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear();
+            //fin obtención fecha
+            let setConfirm = confirm('¿La información ingresada es correcta?')
             if(!setConfirm){
                 return
             }
@@ -349,18 +443,83 @@ if(this.symptoms.length>1){
             finally{
                 alert('Registro guardado');
                 
+                this.symptoms = '';
+                this.additionalFeatures = []
+                this.observations = ''
+                this.opinion = ''
+                this.direction = '';
+                let numberFolio = (Math.floor(Math.random() * (10000 - 1000)) + 1000);
+            this.generalData.folio=numberFolio;
+                this.generalData = '';
+                
+                
+
+            }
+        },
+
+        async saveInformationPsicologico(){
+            //generar fecha
+            var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
+var f=new Date();
+this.generalData.fechaActual = diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear();
+            //fin obtención fecha
+            let setConfirm = confirm('¿Guardar como consulta Psicologica?')
+            if(!setConfirm){
+                return
+            }
+
+            try {
+                let info = {
+                    generalData: this.generalData,
+                    symptoms: ['none'],
+                    
+                    observations: this.observations,
+                    opinion: this.opinion,
+                  
+                }
+
+                let response = await db.collection('forms').doc().set(info)
+
+                this.saveUbication()
+                this.generalData = '';
+                this.symptoms = []
+                this.additionalFeatures = []
+                this.observations = ''
+                this.opinion = ''
+                this.direction = '';
+            } catch (error) {
+                console.log(error)
+            }
+            finally{
+                alert('Registro guardado');
+                
+                this.symptoms = '';
+                this.additionalFeatures = []
+                this.observations = ''
+                this.opinion = ''
+                this.direction = '';
+                let numberFolio = (Math.floor(Math.random() * (10000 - 1000)) + 1000);
+            this.generalData.folio=numberFolio;
+                this.generalData = '';
+                
+                
 
             }
         },
 
         async cleanForm(){
            
-                this.generalData = '';
+                
                 this.symptoms = '';
                 this.additionalFeatures = []
                 this.observations = ''
                 this.opinion = ''
                 this.direction = '';
+                let numberFolio = (Math.floor(Math.random() * (10000 - 1000)) + 1000);
+            this.generalData.folio=numberFolio;
+                this.generalData = '';
+                
                 alert('Registro Descartado');
         },
 
