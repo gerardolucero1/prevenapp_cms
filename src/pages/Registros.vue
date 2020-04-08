@@ -59,7 +59,8 @@
                                 <li v-if="userSelectSymptoms['8']!=undefined">{{userSelectSymptoms['8']}}</li>
                             </ul>
 
-                            <q-btn style="margin-top: 10px;" color="primary" @click="goToForm()" label="Seguimiento" />
+                            <q-btn v-if="userSelect.numFolio=='0007' || userSelect.numFolio=='0006' || userSelect.numFolio=='0005' || userSelect.numFolio=='0004' || userSelect.numFolio=='0003' || userSelect.numFolio=='0002' || userSelect.numFolio=='0001'" style="margin-top: 10px;" color="primary" @click="goToForm()" label="Seguimiento" />
+                            <q-label v-else style="color:orange">Solo puedes dar un seguimiento diario por registro</q-label>
                             
                         </div>
                     </section>
@@ -73,27 +74,7 @@
             </q-card>
         </q-dialog>
 
-        <!-- <section class="row">
-            <div class="col-6">
-                <q-card class="my-card">
-                    <q-card-section>
-                        <div class="text-h6">{{ userSelect.name }}</div>
-                        <div class="text-subtitle2">{{ userSelect.email }}</div>
-                        <q-badge v-if="userSelect.infected" color="red" text-color="white" label="Expuesto" style="padding: 10px; font-size: 20px;" />
-                        <q-badge v-else color="red" text-color="white" label="No Expuesto" style="padding: 10px; font-size: 20px;" />
-                    </q-card-section>
-                    <q-card-section>
-                        ID de Usuario: {{ userSelect.uid }}
-                    </q-card-section>
-                </q-card>
-            </div>
-            <div class="col-6">
-                <q-card class="my-card">
-                    <vue-qr :logoSrc='bgImage' :dotScale="0.30" text="ola bb 2" :size="800" :logoScale="0.2" :margin="20" :logoMargin="6" :logoCornerRadius="8"></vue-qr>
-                    <vue-qr :text="userSelect.uid" :callback="getQR" :size="800" qid="testid"></vue-qr>
-                </q-card>
-            </div>
-        </section> -->
+        
     </q-page>
 </template>
 
@@ -135,9 +116,10 @@ export default {
                     format: val => `${val}`,
                     sortable: true
                 },
+                { name: 'folio', align: 'left', label: 'folio', field: row => row.generalData.numFolio, sortable: true },
                 { name: 'diagnostico', align: 'left', label: 'Diagnostico', field: 'opinion', sortable: true },
                 { name: 'telefono', align: 'left', label: 'Teléfono', field: row => row.generalData.telephone, sortable: true },
-                { name: 'ultimaActualizacion', align: 'left', label: 'Ultima Actualización', field: 0, sortable: true },
+                { name: 'ultimaActualizacion', align: 'left', label: 'Ultima Actualización', field: row => row.generalData.fechaActual, sortable: true },
                 { name: 'edad', align: 'left', label: 'Edad', field: row => row.generalData.age, sortable: true },
                 { name: 'actions', label: 'Actions', field: '', align:'center' }
             ],
@@ -176,10 +158,10 @@ export default {
             }
         },
         goToForm(){
-            alert(this.userSelect.name);
+            
             this.$router.push({
-                path: 'form2',params:{
-                    id:this.userSelectStatus,
+                path: 'form2/'+this.id,params:{
+                    id:this.id,
                     }
             })
         },
@@ -187,7 +169,7 @@ export default {
         getUser(args, position){
             //console.log(index);
         
-            this.id=args.row.id;
+            this.id=args.row.generalData.numFolio;
             this.userSelect = args.row.generalData
             this.userSelectStatus = args.row.opinion
             this.userSelectSymptoms = args.row.symptoms

@@ -127,7 +127,7 @@ const routes = [
         }
     },
     {
-        path: '/form2',
+        path: '/form2/:id',
         props:{default:true},
         name: 'formulario2',
         component: () => import('layouts/MainLayout.vue'),

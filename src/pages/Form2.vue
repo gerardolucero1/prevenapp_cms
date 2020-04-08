@@ -31,7 +31,7 @@
     <q-page>
         <section class="row" style="width: 90%; margin-left: 5%;">
             <div class="col-12 box">
-                <p class="title" style="background:#FAE586">Datos Generales <span style="width:100%; font-weight:bold; text-aling:right; position:absolute; left:800px">Folio: {{folio}}</span></p>
+                <p class="title" style="background:#FAE586">Datos Generales<span style="width:100%; font-weight:bold; text-aling:right; position:absolute; left:800px">Folio: {{$route.params.id}}</span></p>
                 <section class="row">
                     <div class="col">
                         <q-input v-model="generalData.name" type="text" label="Nombre" />
@@ -273,6 +273,244 @@ export default {
 
     mounted() {
         this.$refs.address.focus();
+        //this.$router;
+        if(this.$route.params.id=='0007'){
+            
+            this.generalData.name="Carmen";
+                this.generalData.lastName="Loya";
+                this.generalData.secondLastName="Miranda";
+
+                this.generalData.lugarResidencia="";
+
+                this.generalData.birthdate="1958-05-31";
+                this.generalData.age="61";
+                this.generalData.folio="0007";
+
+                this.generalData.sex="Femenino";
+                this.generalData.telephone="";
+
+                this.generalData.civilState="Soltero";
+                this.generalData.cellular="6145132883";
+                this.generalData.fechaActual="";
+
+                this.generalData.direction="";
+                this.generalData.number="7012";
+                this.generalData.cp="31460";
+
+                this.generalData.etnia="";
+                this.generalData.numFolio="";
+
+                this.generalData.familyNumbers="7";
+                this.generalData.medicalSecure="IMSS";
+                this.observations="sin enfermedades";
+                this.opinion="Sin riesgo";
+                this.symptoms=['dolorCabeza', 'dolorMuscular', 'conjuntivitis', 'dolorFaringeo'];
+                this.additionalFeatures=[];
+        }
+        if(this.$route.params.id=='0006'){
+            this.generalData.name="jesus alberto";
+                this.generalData.lastName="villa";
+                this.generalData.secondLastName="Estupiñon";
+
+                this.generalData.lugarResidencia="";
+
+                this.generalData.birthdate="1961-08-01";
+                this.generalData.age="58";
+                this.generalData.folio="0006";
+
+                this.generalData.sex="Masculino";
+                this.generalData.telephone="";
+
+                this.generalData.civilState="Casado";
+                this.generalData.cellular="6141039027";
+                this.generalData.fechaActual="";
+
+                this.generalData.direction="";
+                this.generalData.number="3741";
+                this.generalData.cp="31136";
+
+                this.generalData.etnia="";
+                this.generalData.numFolio="";
+
+                this.generalData.familyNumbers="2";
+                this.generalData.medicalSecure="IMSS";
+                this.observations="paciente masculino de 58 años de edad con antecedente hipertension arterial, niega alguna otro antecedente de importancia, refiere acudio el dia 05/04/20 a valoracion a su servicio medico por presentar tos seca, fiebre mayor 38c, dolor muscular y articular, cefalea, astenia y adinamia. el cual se egresa a domicilio con tratamiento sintomatico, reposo y aislamiento. el día refiere no hay mejoria de la sintomatologia antes mencionada , y menciona presento datos de dificultad respiratoria el día 06/abr/20, por lo que se recomienda acuda a revaloracion medica en la unidad medica correspondiente a su servicio medico de forma inmediata.";
+                this.opinion="Hospitalario";
+                this.symptoms=["dolorArticulaciones","dolorMoscular","Fiebre","Tos","dolorCabeza","dolorToracico","dolorFaringeo","dificultadRespiratoria","malestarGeneral"];
+                this.additionalFeatures=['cronicas'];
+            
+
+        }
+        if(this.$route.params.id=='0005'){
+            this.generalData.name="Monica";
+                this.generalData.lastName="Sanchez";
+                this.generalData.secondLastName="Salazar";
+
+                this.generalData.lugarResidencia="";
+
+                this.generalData.birthdate="1993-01-23";
+                this.generalData.age="27";
+                this.generalData.folio="0005";
+
+                this.generalData.sex="Femenino";
+                this.generalData.telephone="4200889";
+
+                this.generalData.civilState="Soltero";
+                this.generalData.cellular="";
+                this.generalData.fechaActual="";
+
+                this.generalData.direction="";
+                this.generalData.number="405";
+                this.generalData.cp="31050";
+
+                this.generalData.etnia="";
+                this.generalData.numFolio="";
+
+                this.generalData.familyNumbers="3";
+                this.generalData.medicalSecure="";
+                this.observations="";
+                this.opinion="Sin riesgo";
+                this.symptoms=["Tos","dolorMoscular","malestarGeneral"];
+                this.additionalFeatures=[''];
+            
+
+        }
+        if(this.$route.params.id=='0004'){
+            this.generalData.name="angelica";
+                this.generalData.lastName="alvarez";
+                this.generalData.secondLastName="riva";
+
+                this.generalData.lugarResidencia="";
+
+                this.generalData.birthdate="1971-08-02";
+                this.generalData.age="48";
+                this.generalData.folio="0004";
+
+                this.generalData.sex="Femenino";
+                this.generalData.telephone="6141049843";
+
+                this.generalData.civilState="Casado";
+                this.generalData.cellular="";
+                this.generalData.fechaActual="";
+
+                this.generalData.direction="";
+                this.generalData.number="";
+                this.generalData.cp="";
+
+                this.generalData.etnia="";
+                this.generalData.numFolio="";
+
+                this.generalData.familyNumbers="4";
+                this.generalData.medicalSecure="PENSIONES";
+                this.observations="tos productiva nocturna, dificultad respiratoria leve nocturna, bajo tratamiento que le dieron en pensiones antecedentes: asmática tuvo contacto con hija que viene de juarez ";
+                this.opinion="Sospechoso";
+                this.symptoms=["Tos","dolorCabeza","dificultadRespiratoria"];
+                this.additionalFeatures=[''];
+            
+
+        }
+        if(this.$route.params.id=='0003'){
+            this.generalData.name="hector";
+                this.generalData.lastName="saenz";
+                this.generalData.secondLastName="lara";
+
+                this.generalData.lugarResidencia="";
+
+                this.generalData.birthdate="1993-10-21";
+                this.generalData.age="26";
+                this.generalData.folio="0003";
+
+                this.generalData.sex="Masculino";
+                this.generalData.telephone="";
+
+                this.generalData.civilState="";
+                this.generalData.cellular="";
+                this.generalData.fechaActual="";
+
+                this.generalData.direction="";
+                this.generalData.number="";
+                this.generalData.cp="";
+
+                this.generalData.etnia="";
+                this.generalData.numFolio="";
+
+                this.generalData.familyNumbers="";
+                this.generalData.medicalSecure="";
+                this.observations="";
+                this.opinion="Sin Riesgo";
+                this.symptoms=[];
+                this.additionalFeatures=[''];
+            
+
+        }
+        if(this.$route.params.id=='0002'){
+            this.generalData.name="Gerardo Antonio";
+                this.generalData.lastName="Muñoz";
+                this.generalData.secondLastName="Lujan";
+
+                this.generalData.lugarResidencia="";
+
+                this.generalData.birthdate="1994-07-14";
+                this.generalData.age="25";
+                this.generalData.folio="0002";
+
+                this.generalData.sex="Masculino";
+                this.generalData.telephone="6142353576";
+
+                this.generalData.civilState="Soltero";
+                this.generalData.cellular="6142353576";
+                this.generalData.fechaActual="";
+
+                this.generalData.direction="";
+                this.generalData.number="700";
+                this.generalData.cp="31137";
+
+                this.generalData.etnia="";
+                this.generalData.numFolio="";
+
+                this.generalData.familyNumbers="4";
+                this.generalData.medicalSecure="IMSS";
+                this.observations="Realiza llamada por probable crisis de ansiedad. Al interrogatorio refiere dislalia, sensación de salir corriendo, cefalea frontal y taquicardia de 20 minutos de evolución. Ya había presentado anteriormente dicha sintomatología, por lo que se sugiere realizar cita con medico familiar de su servicio médico (IMSS).";
+                this.opinion="";
+                this.symptoms=['dolorCabeza'];
+                this.additionalFeatures=[''];
+            
+
+        }
+        if(this.$route.params.id=='0001'){
+            this.generalData.name="AIDA";
+                this.generalData.lastName="REZA";
+                this.generalData.secondLastName="CARRILLO";
+
+                this.generalData.lugarResidencia="";
+
+                this.generalData.birthdate="1950-02-20";
+                this.generalData.age="70";
+                this.generalData.folio="0001";
+
+                this.generalData.sex="Femenino";
+                this.generalData.telephone="6142411391";
+
+                this.generalData.civilState="Viudo";
+                this.generalData.cellular="6142411391";
+                this.generalData.fechaActual="";
+
+                this.generalData.direction="";
+                this.generalData.number="1308";
+                this.generalData.cp="64470";
+
+                this.generalData.etnia="";
+                this.generalData.numFolio="";
+
+                this.generalData.familyNumbers="1";
+                this.generalData.medicalSecure="IMSS";
+                this.observations="NO PRESENTA SINTOMATOLOGÍA RESPIRATORIA ÚNICAMENTE DUDAS ACERCA DE LAS MEDIDAS SIN RIESGO";
+                this.opinion="";
+                this.symptoms=[];
+                this.additionalFeatures=[''];
+            
+
+        }
     },
    
    
@@ -374,6 +612,8 @@ export default {
     },
 
     methods: {
+
+       
         
         getAddressData(addressData, placeResultData, id) {
             console.log(placeResultData)
