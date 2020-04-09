@@ -274,6 +274,283 @@ export default {
     mounted() {
         this.$refs.address.focus();
         //this.$router;
+        if(this.$route.params.id=='0018'){
+            this.generalData.name="Fausto";
+                this.generalData.lastName="Cavazos";
+                this.generalData.secondLastName="ordoñez";
+                this.generalData.lugarResidencia="";
+                this.generalData.birthdate="1942-09-07";
+                this.generalData.age="77";
+                this.generalData.folio="0018";
+                this.generalData.numFfolio="0018";
+                this.generalData.sex="Masculino";
+                this.generalData.telephone="6141731423";
+                this.generalData.civilState="Casado";
+                this.generalData.cellular="";
+                this.generalData.fechaActual="";
+                this.generalData.direction="";
+                this.generalData.number="3112";
+                this.generalData.cp="31203";
+                this.generalData.etnia="";
+                this.generalData.familyNumbers="2";
+                this.generalData.medicalSecure="IMSS";
+                this.observations="llama por información de a donde puede dirigirse en caso de tener alguna emergencia";
+                this.opinion="Sin riesgo";
+                this.symptoms=['malestarGeneral'];
+                this.additionalFeatures=[];
+        }
+        if(this.$route.params.id=='0017'){
+            this.generalData.name="Santiago";
+                this.generalData.lastName="Terrazas";
+                this.generalData.secondLastName="Vargas";
+                this.generalData.lugarResidencia="";
+                this.generalData.birthdate="1969-07-19";
+                this.generalData.age="50";
+                this.generalData.folio="0017";
+                this.generalData.numFfolio="0017";
+                this.generalData.sex="Masculino";
+                this.generalData.telephone="6142520427";
+                this.generalData.civilState="Casado";
+                this.generalData.cellular="";
+                this.generalData.fechaActual="";
+                this.generalData.direction="";
+                this.generalData.number="";
+                this.generalData.cp="";
+                this.generalData.etnia="";
+                this.generalData.familyNumbers="";
+                this.generalData.medicalSecure="";
+                this.observations="Previamente revisada por médico, el cual diagnosticó faringoamigdalitis, tratada con antibiótico y mejorando sintomatología, posteriormente inició con gastroenteritis, la cual está en tratamiento con suero.";
+                this.opinion="Sin riesgo";
+                this.symptoms=['diarrea'];
+                this.additionalFeatures=['diabetes'];
+        }
+        if(this.$route.params.id=='0016'){
+            this.generalData.name="Martha";
+                this.generalData.lastName="Portillo";
+                this.generalData.secondLastName="";
+                this.generalData.lugarResidencia="";
+                this.generalData.birthdate="";
+                this.generalData.age="0";
+                this.generalData.folio="0016";
+                this.generalData.numFfolio="0016";
+                this.generalData.sex="";
+                this.generalData.telephone="";
+                this.generalData.civilState="";
+                this.generalData.cellular="";
+                this.generalData.fechaActual="";
+                this.generalData.direction="";
+                this.generalData.number="";
+                this.generalData.cp="";
+                this.generalData.etnia="";
+                this.generalData.familyNumbers="";
+                this.generalData.medicalSecure="";
+                this.observations="Paciente con antecedente de Ca de colon, sin sintomatología para Covid-19. Se comunica pidiendo información de bolsa de colostomía";
+                this.opinion="Sin riesgo";
+                this.symptoms=['malestarGeneral'];
+                this.additionalFeatures=[];
+        }
+if(this.$route.params.id=='0015'){
+            this.generalData.name="Oscar Alan";
+                this.generalData.lastName="Montes";
+                this.generalData.secondLastName="Pérez";
+                this.generalData.lugarResidencia="";
+                this.generalData.birthdate="1993-09-15";
+                this.generalData.age="26";
+                this.generalData.folio="0015";
+                this.generalData.numFfolio="0015";
+                this.generalData.sex="Masculino";
+                this.generalData.telephone="6141707478";
+                this.generalData.civilState="";
+                this.generalData.cellular="";
+                this.generalData.fechaActual="";
+                this.generalData.direction="";
+                this.generalData.number="19904";
+                this.generalData.cp="31183";
+                this.generalData.etnia="";
+                this.generalData.familyNumbers="4";
+                this.generalData.medicalSecure="";
+                this.observations="Paciente con sintomatología de faringitis viral hace dos días; acude a su médico quien indica Antifludes y Naproxeno. Actualmente el paciente se encuentra asintomático, marca por dudas sobre si se puede llevar a cabo la prueba de confirmación de Covid-19 en medio público.";
+                this.opinion="Sin riesgo";
+                this.symptoms=['Fiebre', 'dolorFaringeo', 'malestarGeneral'];
+                this.additionalFeatures=[];
+        }
+        if(this.$route.params.id=='0014'){
+            this.generalData.name="Ramon";
+                this.generalData.lastName="Orozco";
+                this.generalData.secondLastName="Quintana";
+                this.generalData.lugarResidencia="";
+                this.generalData.birthdate="1940-05-11";
+                this.generalData.age="79";
+                this.generalData.folio="0014";
+                this.generalData.numFfolio="0014";
+                this.generalData.sex="Femenino";
+                this.generalData.telephone="6144011720";
+                this.generalData.civilState="Casado";
+                this.generalData.cellular="";
+                this.generalData.fechaActual="";
+                this.generalData.direction="";
+                this.generalData.number="";
+                this.generalData.cp="31100";
+                this.generalData.etnia="";
+                this.generalData.familyNumbers="2";
+                this.generalData.medicalSecure="";
+                this.observations="HIPERTENSION ARTERIAL SIN APEGO A TRATAMIENTO ";
+                this.opinion="Sin riesgo";
+                this.symptoms=['Fiebre', 'dolorArticulaciones', 'dolorMuscular', 'malestarGeneral'];
+                this.additionalFeatures=['cronicas'];
+        }
+        if(this.$route.params.id=='0013'){
+            this.generalData.name="KEVIN";
+                this.generalData.lastName="ACOSTA";
+                this.generalData.secondLastName="ORTEGA";
+                this.generalData.lugarResidencia="";
+                this.generalData.birthdate="1995-09-24";
+                this.generalData.age="24";
+                this.generalData.folio="0013";
+                this.generalData.numFfolio="0013";
+                this.generalData.sex="Masculino";
+                this.generalData.telephone="0000000";
+                this.generalData.civilState="Soltero";
+                this.generalData.cellular="6145221617";
+                this.generalData.fechaActual="";
+                this.generalData.direction="";
+                this.generalData.number="65";
+                this.generalData.cp="31375";
+                this.generalData.etnia="";
+                this.generalData.familyNumbers="3";
+                this.generalData.medicalSecure="INSABI";
+                this.observations="";
+                this.opinion="Sin Riesgo";
+                this.symptoms=['Tos'];
+                this.additionalFeatures=[];
+        }
+
+        if(this.$route.params.id=='0012'){
+            this.generalData.name="ANA MARIA";
+                this.generalData.lastName="JIMENEZ";
+                this.generalData.secondLastName="LARA";
+                this.generalData.lugarResidencia="";
+                this.generalData.birthdate="1959-04-03";
+                this.generalData.age="61";
+                this.generalData.folio="0012";
+                this.generalData.numFfolio="0012";
+                this.generalData.sex="Femenino";
+                this.generalData.telephone="4141985";
+                this.generalData.civilState="Divorciado";
+                this.generalData.cellular="";
+                this.generalData.fechaActual="";
+                this.generalData.direction="";
+                this.generalData.number="1511";
+                this.generalData.cp="31200";
+                this.generalData.etnia="";
+                this.generalData.familyNumbers="0";
+                this.generalData.medicalSecure="ISSSTE";
+                this.observations="HIPERTENSION ARTERIAL DOLOR FARINGEO LEVE SE RECOMIENDA PARACETAMOL, LA PACIENTE ESTA EN BUSCA DE FAMILIAR O VECINO QUE LE PUEDA COMPRAR O PROPORCIONAR EL MEDICAMENTO";
+                this.opinion="Sin riesgo";
+                this.symptoms=['dolorCabeza', 'malestarGeneral', 'dolorFaringeo'];
+                this.additionalFeatures=['cronicas'];
+        }
+        if(this.$route.params.id=='0011'){
+            this.generalData.name="carlos aduardo";
+                this.generalData.lastName="garza";
+                this.generalData.secondLastName="rubio";
+                this.generalData.lugarResidencia="";
+                this.generalData.birthdate="1957-07-03";
+                this.generalData.age="62";
+                this.generalData.folio="0011";
+                this.generalData.numFfolio="0011";
+                this.generalData.sex="Masculino";
+                this.generalData.telephone="";
+                this.generalData.civilState="";
+                this.generalData.cellular="6141753148";
+                this.generalData.fechaActual="";
+                this.generalData.direction="";
+                this.generalData.number="1507";
+                this.generalData.cp="31203";
+                this.generalData.etnia="";
+                this.generalData.familyNumbers="3";
+                this.generalData.medicalSecure="IMSS";
+                this.observations="paciente masculino 62 años antes comentado se refiere con dolor torácico(esternón), niega alguna otra sintomatologia asociada a infección de vías respiratorias, por lo que se le explica que actualmente no cumple con criterios de sospecha y no es candidato a realizar prueba diagnostica(por la cual pregunto). se indica continuar con medidas de prevención y que el síntoma referido deberá ser valorado por su medico.";
+                this.opinion="Sin Riesgo";
+                this.symptoms=['dolorToracico'];
+                this.additionalFeatures=['cronicas'];
+        }
+        if(this.$route.params.id=='0010'){
+            this.generalData.name="GONZALO";
+                this.generalData.lastName="ARANDA";
+                this.generalData.secondLastName="";
+                this.generalData.lugarResidencia="";
+                this.generalData.birthdate="1944-01-10";
+                this.generalData.age="76";
+                this.generalData.folio="0010";
+                this.generalData.numFfolio="0010";
+                this.generalData.sex="Masculino";
+                this.generalData.lugarResidencia="Casa Habitacion Familiar o Propia";
+                this.generalData.telephone="6145873154";
+                this.generalData.civilState="Casado";
+                this.generalData.cellular="6145873154";
+                this.generalData.fechaActual="";
+                this.generalData.direction="";
+                this.generalData.number="4109";
+                this.generalData.cp="31110";
+                this.generalData.etnia="";
+                this.generalData.familyNumbers="5";
+                this.generalData.medicalSecure="IMSS";
+                this.observations="TOS PRODUCTIVA DE 4 MESES DE EVOLUCIÓN PACIENTE PORTADOR DE MARCAPASOS";
+                this.opinion="Sin riesgo";
+                this.symptoms=['Tos'];
+                this.additionalFeatures=[];
+        }
+        if(this.$route.params.id=='0009'){
+            this.generalData.name="Cesar Isidro";
+                this.generalData.lastName="Ayala";
+                this.generalData.secondLastName="Pinales";
+                this.generalData.lugarResidencia="";
+                this.generalData.birthdate="1987-03-16";
+                this.generalData.age="33";
+                this.generalData.folio="0009";
+                this.generalData.numFfolio="0009";
+                this.generalData.sex="Masculino";
+                this.generalData.telephone="6142286840";
+                this.generalData.civilState="Casado";
+                this.generalData.cellular="";
+                this.generalData.fechaActual="";
+                this.generalData.direction="";
+                this.generalData.number="4032";
+                this.generalData.cp="31124";
+                this.generalData.etnia="";
+                this.generalData.familyNumbers="5";
+                this.generalData.medicalSecure="";
+                this.observations="Asmático desde hace 6 años en tratamiento con salbutamol y rinitis alérgica en tratamiento con loratadina y dexametasona IM cada 6 meses. Se le explica que no presenta síntomas de alarma, que es época de polinización y exacerbación de enfermedades alérgicas, el paciente refiere que el y su familia han seguido las medidas higienicas debidas tales como uso de gel antibacterial constante, lavado de manos, aseo de ropa antes de entrar a casa, etc. Se refuerzan medidas de prevención.";
+                this.opinion="";
+                this.symptoms=['dolorCabeza'];
+                this.additionalFeatures=['cronicas', 'obesidad'];
+        }
+       if(this.$route.params.id=='0008'){
+            this.generalData.name="";
+                this.generalData.lastName="";
+                this.generalData.secondLastName="";
+                this.generalData.lugarResidencia="";
+                this.generalData.birthdate="";
+                this.generalData.age="";
+                this.generalData.folio="0008";
+                this.generalData.numFfolio="0008";
+                this.generalData.sex="";
+                this.generalData.telephone="";
+                this.generalData.civilState="";
+                this.generalData.cellular="";
+                this.generalData.fechaActual="";
+                this.generalData.direction="";
+                this.generalData.number="";
+                this.generalData.cp="";
+                this.generalData.etnia="";
+                this.generalData.familyNumbers="";
+                this.generalData.medicalSecure="";
+                this.observations="";
+                this.opinion="";
+                this.symptoms=[];
+                this.additionalFeatures=[];
+        }
         if(this.$route.params.id=='0007'){
             
             this.generalData.name="Carmen";
@@ -285,6 +562,7 @@ export default {
                 this.generalData.birthdate="1958-05-31";
                 this.generalData.age="61";
                 this.generalData.folio="0007";
+                this.generalData.numFfolio="0007";
 
                 this.generalData.sex="Femenino";
                 this.generalData.telephone="";
@@ -298,7 +576,6 @@ export default {
                 this.generalData.cp="31460";
 
                 this.generalData.etnia="";
-                this.generalData.numFolio="";
 
                 this.generalData.familyNumbers="7";
                 this.generalData.medicalSecure="IMSS";
@@ -317,6 +594,7 @@ export default {
                 this.generalData.birthdate="1961-08-01";
                 this.generalData.age="58";
                 this.generalData.folio="0006";
+                this.generalData.numFolio="0006";
 
                 this.generalData.sex="Masculino";
                 this.generalData.telephone="";
@@ -330,11 +608,11 @@ export default {
                 this.generalData.cp="31136";
 
                 this.generalData.etnia="";
-                this.generalData.numFolio="";
+          
 
                 this.generalData.familyNumbers="2";
                 this.generalData.medicalSecure="IMSS";
-                this.observations="paciente masculino de 58 años de edad con antecedente hipertension arterial, niega alguna otro antecedente de importancia, refiere acudio el dia 05/04/20 a valoracion a su servicio medico por presentar tos seca, fiebre mayor 38c, dolor muscular y articular, cefalea, astenia y adinamia. el cual se egresa a domicilio con tratamiento sintomatico, reposo y aislamiento. el día refiere no hay mejoria de la sintomatologia antes mencionada , y menciona presento datos de dificultad respiratoria el día 06/abr/20, por lo que se recomienda acuda a revaloracion medica en la unidad medica correspondiente a su servicio medico de forma inmediata.";
+                this.observations="paciente masculino de 58 años de edad con antecedente hipertension arterial, niega alguna otro antecedente de importancia, refiere acudio el dia 05/04/20 a valoracion a su servicio medico por presentar tos seca, fiebre mayor 38c, dolor muscular y articular, cefalea, astenia y adinamia. el cual se egresa a domicilio con tratamiento sintomatico, reposo y aislamiento. el día refiere no hay mejoria de la sintomatologia antes mencionada , y menciona presento datos de dificultad respiratoria el día 06/abr/20, por lo que se recomienda acuda a revaloracion medica en la unidad medica correspondiente a su servicio medico de forma inmediata. 8/04/2020 8:44 am, se da seguimiento, el paciente no fue llevado a hospital ya que no quiso, el paciente es hipertenso, traía descontrolada la presión, refiere la hija Noemi villa que el paciente no vive con ella, ahorita hablara con su mama para ver como siguió, esperaremos la respuesta de la señora y de no tener respuesta en una hora se volverá a contactar con ella. 08/04/2020 9:18 am, se habla con la esposa del paciente ( gloria Martínez) quien refiere que el paciente toma amlodipino y losartan cada 12 horas, el paciente ha tenido antecedentes de comer tamales y desde entonces comenzó con malestar general, hipertermia, malestar abdominal, vomito, actualmente el paciente se encuentra estable, tranquilo, la esposa de la paciente refiere que ha tomado las medidas de higiene necesarias, asi como el auto confinamiento. seguiremos en contacto con ella. 8/04/2020 17:56: paciente llama nuevamente por referir hipertermia 38.7, tos productiva de predominio matutino, refiere que hace dos horas comenzó a sentirse mal nuevamente, mialgias, artralgias, se le recomienda reposo en cama y se evaluara mañana por la mañana, se hace hincapié en signos de alarma respiratoria y se deja inicacion de acudir a hospital en caso de que los síntomas se agraven.";
                 this.opinion="Hospitalario";
                 this.symptoms=["dolorArticulaciones","dolorMoscular","Fiebre","Tos","dolorCabeza","dolorToracico","dolorFaringeo","dificultadRespiratoria","malestarGeneral"];
                 this.additionalFeatures=['cronicas'];
@@ -351,6 +629,7 @@ export default {
                 this.generalData.birthdate="1993-01-23";
                 this.generalData.age="27";
                 this.generalData.folio="0005";
+                this.generalData.numFolio="0005";
 
                 this.generalData.sex="Femenino";
                 this.generalData.telephone="4200889";
@@ -364,7 +643,7 @@ export default {
                 this.generalData.cp="31050";
 
                 this.generalData.etnia="";
-                this.generalData.numFolio="";
+        
 
                 this.generalData.familyNumbers="3";
                 this.generalData.medicalSecure="";
@@ -385,6 +664,7 @@ export default {
                 this.generalData.birthdate="1971-08-02";
                 this.generalData.age="48";
                 this.generalData.folio="0004";
+                this.generalData.numFolio="0004";
 
                 this.generalData.sex="Femenino";
                 this.generalData.telephone="6141049843";
@@ -398,7 +678,7 @@ export default {
                 this.generalData.cp="";
 
                 this.generalData.etnia="";
-                this.generalData.numFolio="";
+       
 
                 this.generalData.familyNumbers="4";
                 this.generalData.medicalSecure="PENSIONES";
@@ -419,6 +699,7 @@ export default {
                 this.generalData.birthdate="1993-10-21";
                 this.generalData.age="26";
                 this.generalData.folio="0003";
+                this.generalData.numFolio="0003";
 
                 this.generalData.sex="Masculino";
                 this.generalData.telephone="";
@@ -432,7 +713,7 @@ export default {
                 this.generalData.cp="";
 
                 this.generalData.etnia="";
-                this.generalData.numFolio="";
+    
 
                 this.generalData.familyNumbers="";
                 this.generalData.medicalSecure="";
@@ -453,6 +734,7 @@ export default {
                 this.generalData.birthdate="1994-07-14";
                 this.generalData.age="25";
                 this.generalData.folio="0002";
+                this.generalData.numFolio="0002";
 
                 this.generalData.sex="Masculino";
                 this.generalData.telephone="6142353576";
@@ -487,6 +769,7 @@ export default {
                 this.generalData.birthdate="1950-02-20";
                 this.generalData.age="70";
                 this.generalData.folio="0001";
+                this.generalData.numFolio="0001";
 
                 this.generalData.sex="Femenino";
                 this.generalData.telephone="6142411391";
@@ -681,7 +964,7 @@ this.generalData.fechaActual = diasSemana[f.getDay()] + ", " + f.getDate() + " d
                 console.log(error)
             }
             finally{
-                alert('Registro guardado');
+                alert('Seguimiento guardado correctamente');
                 
                 this.symptoms = '';
                 this.additionalFeatures = []
@@ -732,7 +1015,7 @@ this.generalData.fechaActual = diasSemana[f.getDay()] + ", " + f.getDate() + " d
                 console.log(error)
             }
             finally{
-                alert('Registro guardado');
+                alert('Seguimineto guardado correctamente');
                 
                 this.symptoms = '';
                 this.additionalFeatures = []
@@ -760,7 +1043,7 @@ this.generalData.fechaActual = diasSemana[f.getDay()] + ", " + f.getDate() + " d
             this.generalData.folio=numberFolio;
                 this.generalData = '';
                 
-                alert('Registro Descartado');
+                alert('Seguimiento descartado');
         },
 
         async saveUbication(){
