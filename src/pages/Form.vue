@@ -199,6 +199,7 @@ export default {
                 civilState: '',
                 cellular: '',
                 fechaActual: '',
+                timestamp:'',
                 fechaRegistro: '',
 
                 direction: '',
@@ -370,7 +371,7 @@ export default {
         folio(){
             let numberFolio = (Math.floor(Math.random() * (10000 - 1000)) + 1000);
             this.generalData.folio=numberFolio;
-            this.generalData.numFolio=numberFolio;
+            this.generalData.numFolio=''+numberFolio;
             return numberFolio;
         }
     },
@@ -414,6 +415,7 @@ export default {
 var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
 var f=new Date();
 this.generalData.fechaActual = diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear();
+this.generalData.timestamp = f;
             //fin obtención fecha
             let setConfirm = confirm('¿La información ingresada es correcta?')
             if(!setConfirm){

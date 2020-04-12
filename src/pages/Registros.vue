@@ -14,6 +14,7 @@
                 <q-btn color="blue" style="margin:10px" @click="getHospitalarios()">Hospitalarios</q-btn>
                 <q-btn color="blue" style="margin:10px" @click="getSospechosos()">Sospechoso</q-btn>
                 <q-btn color="blue" style="margin:10px" @click="getSinRiesgo()">Sin Riesgo</q-btn>
+                <q-input type="text" placeholder="Buscar" @keyup.enter="getNombre()" v-model="buscadorNombre"></q-input>
                 <q-table
                     title="Registros"
                     :data="users"
@@ -101,6 +102,7 @@ export default {
 
     data(){
         return{
+            buscadorNombre:'',
             search: '',
             users: [],
             usersF: [],
@@ -146,7 +148,7 @@ export default {
             let contador=0;
             let folios=[];
             try {
-                let response = await db.collection('forms').orderBy('generalData.fechaActual', 'asc')
+                let response = await db.collection('forms').orderBy('generalData.timestamp', 'desc')
                                                 .get()
                                                 .then((doc) => {
                                                     doc.forEach((res) => {
@@ -177,13 +179,24 @@ export default {
             }
         },
         async getSospechosos(){
-            this.users = []
+            this.usersF = [];
+            this.users = [];
+            let contador=0;
+            let folios=[];
             try {
                 let response = await db.collection('forms').where("opinion", '==', 'Sospechoso')
                                                 .get()
                                                 .then((doc) => {
                                                     doc.forEach((res) => {
-                                                        this.users.push(res.data())
+                                                        this.usersF.push(res.data());
+
+                                                        if(folios.includes(this.usersF[contador].generalData.numFolio)){
+                                                            
+                                                        }else{
+                                                        
+                                                        this.users.push(res.data());}
+                                                        folios[contador]=this.usersF[contador].generalData.numFolio;
+                                                        contador++;
                                                     })
                                                 })
 
@@ -199,13 +212,24 @@ export default {
             }
         },
         async getHospitalarios(){
-            this.users = []
+            this.usersF = [];
+            this.users = [];
+            let contador=0;
+            let folios=[];
             try {
                 let response = await db.collection('forms').where("opinion", '==', 'Hospitalario')
                                                 .get()
                                                 .then((doc) => {
                                                     doc.forEach((res) => {
-                                                        this.users.push(res.data())
+                                                        this.usersF.push(res.data());
+
+                                                        if(folios.includes(this.usersF[contador].generalData.numFolio)){
+                                                            
+                                                        }else{
+                                                        
+                                                        this.users.push(res.data());}
+                                                        folios[contador]=this.usersF[contador].generalData.numFolio;
+                                                        contador++;
                                                     })
                                                 })
 
@@ -221,13 +245,57 @@ export default {
             }
         },
         async getSinRiesgo(){
-            this.users = []
+           this.usersF = [];
+            this.users = [];
+            let contador=0;
+            let folios=[];
             try {
                 let response = await db.collection('forms').where("opinion", '==', 'Sin riesgo')
                                                 .get()
                                                 .then((doc) => {
                                                     doc.forEach((res) => {
-                                                        this.users.push(res.data())
+                                                        this.usersF.push(res.data());
+
+                                                        if(folios.includes(this.usersF[contador].generalData.numFolio)){
+                                                            
+                                                        }else{
+                                                        
+                                                        this.users.push(res.data());}
+                                                        folios[contador]=this.usersF[contador].generalData.numFolio;
+                                                        contador++;
+                                                    })
+                                                })
+
+                if(this.userSelect != ''){
+                    this.userSelect = this.users.find((doc) => {
+                        return this.userSelect.uid = doc.uid
+                    })
+
+                    console.log(this.userSelect)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async getNombre(){
+            this.usersF = [];
+            this.users = [];
+            let contador=0;
+            let folios=[];
+            try {
+                let response = await db.collection('forms').where("generalData.name", "==", this.buscadorNombre)
+                                                .get()
+                                                .then((doc) => {
+                                                    doc.forEach((res) => {
+                                                        this.usersF.push(res.data());
+
+                                                        if(folios.includes(this.usersF[contador].generalData.numFolio)){
+                                                            
+                                                        }else{
+                                                        
+                                                        this.users.push(res.data());}
+                                                        folios[contador]=this.usersF[contador].generalData.numFolio;
+                                                        contador++;
                                                     })
                                                 })
 

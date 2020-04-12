@@ -32,7 +32,7 @@
         <section class="row">
             <div class="col">
                 <q-table
-                    title="Registro de seguimiento"
+                    title="Registros de seguimiento"
                     :data="users"
                     :columns="columns"
                     row-key="name"
@@ -50,7 +50,7 @@
 
 
         <!--Formulario-->
-        <section class="row" style="width: 90%; margin-left: 5%;">
+        <section v-if="generalData.name!='' || generalData.lastName!=''" class="row" style="width: 90%; margin-left: 5%;">
             <div class="col-12 box">
                 <p class="title" style="background:#FAE586">Datos Generales<span style="width:100%; font-weight:bold; text-aling:right; position:absolute; left:800px">Folio: {{$route.params.id}}</span></p>
                 <section class="row">
@@ -188,6 +188,7 @@
                 </section>
             </div>
         </section>
+        <p v-else style="color:red; text-align:center; font-size:30px; width:100%">Selecciona un registro de seguimiento para desplegar el formulario</p>
 
         <q-dialog v-model="dialog" :position="position">
             <q-card>
@@ -280,6 +281,7 @@ export default {
                 civilState: '',
                 cellular: '',
                 fechaActual: '',
+                timestamp:'',
 
                 direction: '',
                 number: '',
@@ -609,11 +611,15 @@ export default {
     
 
         async saveInformation(){
+            let numberFolio = (Math.floor(Math.random() * (10000 - 1000)) + 1000);
+            this.generalData.folio=numberFolio;
+            this.generalData.numFolio=''+numberFolio;
             //generar fecha
             var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
 var f=new Date();
 this.generalData.fechaActual = diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear();
+this.generalData.timestamp = new Date();
             //fin obtención fecha
             let setConfirm = confirm('¿Guardar seguimiento?')
             if(!setConfirm){
