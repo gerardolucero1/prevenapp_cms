@@ -199,6 +199,7 @@ export default {
                 civilState: '',
                 cellular: '',
                 fechaActual: '',
+                fechaRegistro: '',
 
                 direction: '',
                 number: '',
