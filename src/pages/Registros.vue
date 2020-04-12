@@ -10,6 +10,10 @@
     <q-page>
         <section class="row">
             <div class="col">
+                <q-btn color="blue" style="margin:10px" @click="getUsers()">Todos</q-btn>
+                <q-btn color="blue" style="margin:10px" @click="getHospitalarios()">Hospitalarios</q-btn>
+                <q-btn color="blue" style="margin:10px" @click="getSospechosos()">Sospechoso</q-btn>
+                <q-btn color="blue" style="margin:10px" @click="getSinRiesgo()">Sin Riesgo</q-btn>
                 <q-table
                     title="Registros"
                     :data="users"
@@ -59,8 +63,8 @@
                                 <li v-if="userSelectSymptoms['8']!=undefined">{{userSelectSymptoms['8']}}</li>
                             </ul>
 
-                            <q-btn v-if="userSelect.numFolio=='0007' || userSelect.numFolio=='0006' || userSelect.numFolio=='0005' || userSelect.numFolio=='0004' || userSelect.numFolio=='0003' || userSelect.numFolio=='0002' || userSelect.numFolio=='0001'" style="margin-top: 10px;" color="primary" @click="goToForm()" label="Seguimiento" />
-                            <q-label v-else style="color:orange">Solo puedes dar un seguimiento diario por registro</q-label>
+                            <q-btn style="margin-top: 10px;" color="primary" @click="goToForm()" label="Seguimiento" />
+                            
                             
                         </div>
                     </section>
@@ -99,6 +103,7 @@ export default {
         return{
             search: '',
             users: [],
+            usersF: [],
             userSelect: '',
             id:'',
             userSelectStatus: '',
@@ -136,9 +141,89 @@ export default {
 
     methods: {
         async getUsers(){
+            this.usersF = [];
+            this.users = [];
+            let contador=0;
+            let folios=[];
+            try {
+                let response = await db.collection('forms').orderBy('generalData.fechaActual', 'asc')
+                                                .get()
+                                                .then((doc) => {
+                                                    doc.forEach((res) => {
+
+                                                        this.usersF.push(res.data());
+
+                                                        if(folios.includes(this.usersF[contador].generalData.numFolio)){
+                                                            
+                                                        }else{
+                                                        
+                                                        this.users.push(res.data());}
+                                                        folios[contador]=this.usersF[contador].generalData.numFolio;
+                                                        contador++;
+                                                        
+                                                        
+                                                    })
+                                                })
+
+                if(this.userSelect != ''){
+                    this.userSelect = this.users.find((doc) => {
+                        return this.userSelect.uid = doc.uid
+                    })
+
+                    console.log(this.userSelect)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async getSospechosos(){
             this.users = []
             try {
-                let response = await db.collection('forms')
+                let response = await db.collection('forms').where("opinion", '==', 'Sospechoso')
+                                                .get()
+                                                .then((doc) => {
+                                                    doc.forEach((res) => {
+                                                        this.users.push(res.data())
+                                                    })
+                                                })
+
+                if(this.userSelect != ''){
+                    this.userSelect = this.users.find((doc) => {
+                        return this.userSelect.uid = doc.uid
+                    })
+
+                    console.log(this.userSelect)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async getHospitalarios(){
+            this.users = []
+            try {
+                let response = await db.collection('forms').where("opinion", '==', 'Hospitalario')
+                                                .get()
+                                                .then((doc) => {
+                                                    doc.forEach((res) => {
+                                                        this.users.push(res.data())
+                                                    })
+                                                })
+
+                if(this.userSelect != ''){
+                    this.userSelect = this.users.find((doc) => {
+                        return this.userSelect.uid = doc.uid
+                    })
+
+                    console.log(this.userSelect)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async getSinRiesgo(){
+            this.users = []
+            try {
+                let response = await db.collection('forms').where("opinion", '==', 'Sin riesgo')
                                                 .get()
                                                 .then((doc) => {
                                                     doc.forEach((res) => {
