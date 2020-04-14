@@ -29,9 +29,30 @@
 
 <template>
     <q-page>
-        <section class="row" style="width: 90%; margin-left: 5%;">
+        <section class="row">
+            <div class="col">
+                <q-table
+                    title="Registros de seguimiento"
+                    :data="users"
+                    :columns="columns"
+                    row-key="name"
+                >
+                    <template v-slot:body-cell-actions="props">
+                        <q-td :props="props">
+                            <q-btn dense round flat color="grey" @click="getUser(props, 'bottom')" icon="visibility"></q-btn>
+                        </q-td>          
+                    </template>  
+                    
+                </q-table>
+            </div>
+        </section>
+
+
+
+        <!--Formulario-->
+        <section v-if="generalData.name!='' || generalData.lastName!=''" class="row" style="width: 90%; margin-left: 5%;">
             <div class="col-12 box">
-                <p class="title" style="background:#FAE586">Datos Generales <span style="width:100%; font-weight:bold; text-aling:right; position:absolute; left:800px">Folio: {{folio}}</span></p>
+                <p class="title" style="background:#FAE586">Datos Generales<span style="width:100%; font-weight:bold; text-aling:right; position:absolute; left:800px">Folio: {{$route.params.id}}</span></p>
                 <section class="row">
                     <div class="col">
                         <q-input v-model="generalData.name" type="text" label="Nombre" />
@@ -167,21 +188,82 @@
                 </section>
             </div>
         </section>
+        <p v-else style="color:red; text-align:center; font-size:30px; width:100%">Selecciona un registro de seguimiento para desplegar el formulario</p>
+
+        <q-dialog v-model="dialog" :position="position">
+            <q-card>
+                <q-toolbar>
+                    <q-avatar>
+                        <img src="https://i.ibb.co/jfb3LCh/logo.png">
+                    </q-avatar>
+
+                    <q-toolbar-title style="margin-top: 20px; margin-left: 10px;">{{ userSelect.name }} {{ userSelect.lastName }} {{ userSelect.secondLastName }}</q-toolbar-title>
+
+                    <q-btn flat round dense icon="close" v-close-popup />
+                </q-toolbar>
+
+                <q-card-section>
+                    <section class="row">
+                        <div class="col-12" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                            <ion-label style="font-size:14px; font-weight:bold; ">Status Actual</ion-label>
+                            <q-badge v-if="userSelectStatus=='Hospitalario'" style="font-size: 12px; padding: 8px;" color="red" text-color="white" label="Hospitalario" />
+                            <q-badge v-if="userSelectStatus=='Sospechoso'" style="font-size: 12px; padding: 8px;" color="orange" text-color="white" label="Sospechoso" />
+                            <q-badge v-if="userSelectStatus=='Sin Riesgo'" style="font-size: 12px; padding: 8px;" color="green" text-color="white" label="Sin Riesgo" />
+                            <label  style="font-size:14px; font-weight:bold; ">Resumen de ultimo diagnostico:</label>
+                            <label style="text-align:left">Sintomas:</label>
+                            <ul>
+                                <li v-if="userSelectSymptoms['0']!=undefined">{{userSelectSymptoms['0']}}</li>
+                                <li v-if="userSelectSymptoms['1']!=undefined">{{userSelectSymptoms['1']}}</li>
+                                <li v-if="userSelectSymptoms['2']!=undefined">{{userSelectSymptoms['2']}}</li>
+                                <li v-if="userSelectSymptoms['3']!=undefined">{{userSelectSymptoms['3']}}</li>
+                                <li v-if="userSelectSymptoms['4']!=undefined">{{userSelectSymptoms['4']}}</li>
+                                <li v-if="userSelectSymptoms['5']!=undefined">{{userSelectSymptoms['5']}}</li>
+                                <li v-if="userSelectSymptoms['6']!=undefined">{{userSelectSymptoms['6']}}</li>
+                                <li v-if="userSelectSymptoms['7']!=undefined">{{userSelectSymptoms['7']}}</li>
+                                <li v-if="userSelectSymptoms['8']!=undefined">{{userSelectSymptoms['8']}}</li>
+                            </ul>
+
+                            <q-btn style="margin-top: 10px;" color="primary" @click="goToForm()" label="Seguimiento" />
+                            
+                            
+                        </div>
+                    </section>
+                    <section class="row">
+                        <div class="col-12" width="100%">
+                            <!-- <vue-qr :logoSrc='bgImage' :dotScale="0.30" text="ola bb 2" :size="800" :logoScale="0.2" :margin="20" :logoMargin="6" :logoCornerRadius="8"></vue-qr> -->
+                            <vue-qr :text="userSelect.uid" :callback="getQR" :size="350" qid="testid"></vue-qr>
+                        </div>
+                    </section>
+                </q-card-section>
+            </q-card>
+        </q-dialog>
+
+
+        
     </q-page>
 </template>
 
 <script>
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
-
 //Firebase
 import { db } from 'boot/firebase'
 
-export default {
-    components: { VueGoogleAutocomplete },
+//QR
+var QRCode = require('qrcode')
+var canvas = document.getElementById('canvas')
 
-    data: function () {
-        return {
-            address: '',
+import VueQr from 'vue-qr'
+
+export default {
+    name: 'Users',
+
+    components: {
+        VueQr
+    },  
+
+    data(){
+        return{
+             address: '',
             generalData: {
                 name: '',
                 lastName: '',
@@ -200,7 +282,6 @@ export default {
                 cellular: '',
                 fechaActual: '',
                 timestamp:'',
-                fechaRegistro: '',
 
                 direction: '',
                 number: '',
@@ -269,18 +350,42 @@ export default {
                 'Sin riesgo',
                 'Sospechoso',
                 'Hospitalario',
-            ]
+            ],
+            search: '',
+            users: [],
+            userSelect: '',
+            id:'',
+            userSelectStatus: '',
+            userSelectSymptoms: '',
+
+            bgImage: 'https://i.ibb.co/jfb3LCh/logo.png',
+
+            columns: [
+                {
+                    name: 'name',
+                    required: true,
+                    label: 'Fecha',
+                    align: 'left',
+                    field: row => row.generalData.fechaActual,
+                    format: val => `${val}`,
+                    sortable: true
+                },
+                { name: 'diagnostico', align: 'left', label: 'Diagnostico', field: 'opinion', sortable: true },
+                { name: 'actions', label: 'Actions', field: '', align:'center' }
+            ],
+
+            //Modal
+            dialog: false,
+            position: 'top',
         }
     },
 
-    mounted() {
-        this.$refs.address.focus();
+    mounted(){
+        this.getUsers()
     },
-   
-   
-   computed:{
 
-       cambioDictamen(){
+    computed:{
+        cambioDictamen(){
             switch(this.opinion){
                 case 'Sin riesgo':
                     return '*Aislamiento de casa, medidas estándar';
@@ -371,12 +476,108 @@ export default {
         folio(){
             let numberFolio = (Math.floor(Math.random() * (10000 - 1000)) + 1000);
             this.generalData.folio=numberFolio;
-            this.generalData.numFolio=''+numberFolio;
             return numberFolio;
         }
     },
-
     methods: {
+        async getUsers(){
+            
+            this.users = []
+            try {
+                let response = await db.collection('forms').where('generalData.numFolio', '==', this.$route.params.id)
+                                                .get()
+                                                .then((doc) => {
+                                                    doc.forEach((res) => {
+                                                        this.users.push(res.data())
+                                                    })
+                                                })
+
+                if(this.userSelect != ''){
+                    this.userSelect = this.users.find((doc) => {
+                        return this.userSelect.uid = doc.uid
+                    })
+
+                    console.log(this.userSelect)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        },
+       
+       
+        goToForm(){
+            
+            this.$router.push({
+                path: 'form2/'+this.id,params:{
+                    id:this.id,
+                    }
+            })
+        },
+
+        getUser(args, position){
+            //console.log(index);
+        
+            this.id=args.row.generalData.folio;
+            this.userSelect = args.row.generalData
+            this.userSelectStatus = args.row.opinion
+            this.userSelectSymptoms = args.row.symptoms
+
+            //this.position = position
+            //this.dialog = true
+
+                this.generalData.name=args.row.generalData.name;
+                this.generalData.lastName=args.row.generalData.lastName;
+                this.generalData.secondLastName=args.row.generalData.secondLastName;
+                this.generalData.lugarResidencia=args.row.generalData.lugarResidencia;
+                this.generalData.birthdate=args.row.generalData.birthdate;
+                this.generalData.age=args.row.generalData.age;
+                this.generalData.folio=args.row.generalData.folio;
+                this.generalData.numFolio=args.row.generalData.numFolio;
+                this.generalData.sex=args.row.generalData.sex;
+                this.generalData.telephone=args.row.generalData.telephone;
+                this.generalData.civilState=args.row.generalData.civilState;
+                this.generalData.cellular=args.row.generalData.cellular;
+                this.generalData.fechaActual="";
+                this.generalData.direction=args.row.generalData.direction;
+                this.generalData.number=args.row.generalData.number;
+                this.generalData.cp=args.row.generalData.cp;
+                this.generalData.etnia=args.row.generalData.etnia;
+                this.generalData.familyNumbers=args.row.generalData.familyNumbers;
+                this.generalData.medicalSecure=args.row.generalData.medicalSecure;
+                this.observations=args.row.observations;
+                this.opinion=args.row.opinion;
+                this.symptoms=args.row.symptoms;
+                this.additionalFeatures=args.row.additionalFeatures;
+        },
+
+        getQR(dataUrl,id){
+            // console.log(dataUrl, id)
+        },
+
+        //Actualizamos el estado del usuario
+        updateStatus(){
+            let changeStatus = confirm('¿Seguro quieres actualizar el estatus de este usuario?')
+            
+            if(changeStatus){
+                this.updateStatusUser()
+            }
+        },
+
+        async updateStatusUser(){
+            try {
+                let response = await db.collection('users')
+                                        .doc(this.userSelect.uid)
+                                        .update({ infection: !this.userSelect.infection })
+
+                this.getUsers()
+
+                
+
+            } catch (error) {
+                console.log(error)
+            }
+        },
+
         
         getAddressData(addressData, placeResultData, id) {
             console.log(placeResultData)
@@ -392,36 +593,40 @@ export default {
         },
 
 
-        calcularEdad() {
-            var hoy = new Date();
-            this.generalData.birthdate;
-            var cumpleanos = new Date(this.generalData.birthdate);
-            var edad = hoy.getFullYear() - cumpleanos.getFullYear();
-            var m = hoy.getMonth() - cumpleanos.getMonth();
+     calcularEdad() {
+    var hoy = new Date();
+    this.generalData.birthdate;
+    var cumpleanos = new Date(this.generalData.birthdate);
+    var edad = hoy.getFullYear() - cumpleanos.getFullYear();
+    var m = hoy.getMonth() - cumpleanos.getMonth();
     
 
-            if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
-                edad--;
-            }
-            this.generalData.age = edad;
+    if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
+        edad--;
+    }
+    this.generalData.age=edad;
    
-        },
+},
 
     
 
         async saveInformation(){
+            let numberFolio = (Math.floor(Math.random() * (10000 - 1000)) + 1000);
+            this.generalData.folio=numberFolio;
+            this.generalData.numFolio=''+numberFolio;
             //generar fecha
             var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
 var f=new Date();
 this.generalData.fechaActual = diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear();
-this.generalData.timestamp = f;
+this.generalData.timestamp = new Date();
             //fin obtención fecha
-            let setConfirm = confirm('¿La información ingresada es correcta?')
+            let setConfirm = confirm('¿Guardar seguimiento?')
             if(!setConfirm){
                 return
             }
-
+            this.generalData.folio=this.$route.params.id;
+            this.generalData.numFolio=this.$route.params.id;
             try {
                 let info = {
                     generalData: this.generalData,
@@ -429,42 +634,51 @@ this.generalData.timestamp = f;
                     additionalFeatures: this.additionalFeatures,
                     observations: this.observations,
                     opinion: this.opinion,
+
                   
                 }
+                
+                if(info.generalData.lugarResidencia==undefined){
+                    info.generalData.lugarResidencia='Casa Habitacion Familiar o Propia'
+                }
+                if(info.generalData.folio==undefined){
+                    info.generalData.folio= this.$route.params.id;
+                }
+
 
                 let response = await db.collection('forms').doc().set(info)
 
-                this.saveUbication()
+                
+
+                this.saveUbication();
+                this.getUsers();
                 this.generalData = '';
                 this.symptoms = []
                 this.additionalFeatures = []
                 this.observations = ''
                 this.opinion = ''
                 this.direction = '';
+                alert('Registro guardado');
             } catch (error) {
+                alert('Error al guardar, verifica que completaste todos los campos')
                 console.log(error)
             }
             finally{
-                alert('Registro guardado');
                 
-                this.symptoms = '';
-                this.additionalFeatures = []
-                this.observations = ''
-                this.opinion = ''
-                this.direction = ''
-                let numberFolio = (Math.floor(Math.random() * (10000 - 1000)) + 1000);
-                this.generalData.folio=numberFolio;
-                this.generalData = '';
                 
+               
                 
 
             }
         },
 
         async saveInformationPsicologico(){
-
-            this.generalData.fechaActual = new Date()
-
+            //generar fecha
+            var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
+var f=new Date();
+this.generalData.fechaActual = diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear();
+            //fin obtención fecha
             let setConfirm = confirm('¿Guardar como consulta Psicologica?')
             if(!setConfirm){
                 return
@@ -499,10 +713,12 @@ this.generalData.timestamp = f;
                 this.additionalFeatures = []
                 this.observations = ''
                 this.opinion = ''
-                this.direction = ''
+                this.direction = '';
                 let numberFolio = (Math.floor(Math.random() * (10000 - 1000)) + 1000);
-                this.generalData.folio=numberFolio;
-                this.generalData = ''
+            this.generalData.folio=numberFolio;
+                this.generalData = '';
+                
+                
 
             }
         },
@@ -516,7 +732,7 @@ this.generalData.timestamp = f;
                 this.opinion = ''
                 this.direction = '';
                 let numberFolio = (Math.floor(Math.random() * (10000 - 1000)) + 1000);
-                this.generalData.folio=numberFolio;
+            this.generalData.folio=numberFolio;
                 this.generalData = '';
                 
                 alert('Registro Descartado');

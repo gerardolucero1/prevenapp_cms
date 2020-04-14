@@ -132,7 +132,7 @@ const routes = [
         name: 'formulario2',
         component: () => import('layouts/MainLayout.vue'),
         children: [
-            { path: '', component: () => import('pages/Form2.vue') }
+            { path: '', component: () => import('pages/Form3.vue') }
         ]
     },
 
