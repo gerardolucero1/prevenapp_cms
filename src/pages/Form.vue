@@ -389,30 +389,27 @@ export default {
         },
 
 
-     calcularEdad() {
-    var hoy = new Date();
-    this.generalData.birthdate;
-    var cumpleanos = new Date(this.generalData.birthdate);
-    var edad = hoy.getFullYear() - cumpleanos.getFullYear();
-    var m = hoy.getMonth() - cumpleanos.getMonth();
+        calcularEdad() {
+            var hoy = new Date();
+            this.generalData.birthdate;
+            var cumpleanos = new Date(this.generalData.birthdate);
+            var edad = hoy.getFullYear() - cumpleanos.getFullYear();
+            var m = hoy.getMonth() - cumpleanos.getMonth();
     
 
-    if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
-        edad--;
-    }
-    this.generalData.age=edad;
+            if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
+                edad--;
+            }
+            this.generalData.age = edad;
    
-},
+        },
 
     
 
         async saveInformation(){
-            //generar fecha
-            var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
-var f=new Date();
-this.generalData.fechaActual = diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear();
-            //fin obtención fecha
+
+            this.generalData.fechaActual = new Date()
+
             let setConfirm = confirm('¿La información ingresada es correcta?')
             if(!setConfirm){
                 return
@@ -447,9 +444,9 @@ this.generalData.fechaActual = diasSemana[f.getDay()] + ", " + f.getDate() + " d
                 this.additionalFeatures = []
                 this.observations = ''
                 this.opinion = ''
-                this.direction = '';
+                this.direction = ''
                 let numberFolio = (Math.floor(Math.random() * (10000 - 1000)) + 1000);
-            this.generalData.folio=numberFolio;
+                this.generalData.folio=numberFolio;
                 this.generalData = '';
                 
                 
@@ -458,12 +455,9 @@ this.generalData.fechaActual = diasSemana[f.getDay()] + ", " + f.getDate() + " d
         },
 
         async saveInformationPsicologico(){
-            //generar fecha
-            var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
-var f=new Date();
-this.generalData.fechaActual = diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear();
-            //fin obtención fecha
+
+            this.generalData.fechaActual = new Date()
+
             let setConfirm = confirm('¿Guardar como consulta Psicologica?')
             if(!setConfirm){
                 return
@@ -498,12 +492,10 @@ this.generalData.fechaActual = diasSemana[f.getDay()] + ", " + f.getDate() + " d
                 this.additionalFeatures = []
                 this.observations = ''
                 this.opinion = ''
-                this.direction = '';
+                this.direction = ''
                 let numberFolio = (Math.floor(Math.random() * (10000 - 1000)) + 1000);
-            this.generalData.folio=numberFolio;
-                this.generalData = '';
-                
-                
+                this.generalData.folio=numberFolio;
+                this.generalData = ''
 
             }
         },
@@ -517,7 +509,7 @@ this.generalData.fechaActual = diasSemana[f.getDay()] + ", " + f.getDate() + " d
                 this.opinion = ''
                 this.direction = '';
                 let numberFolio = (Math.floor(Math.random() * (10000 - 1000)) + 1000);
-            this.generalData.folio=numberFolio;
+                this.generalData.folio=numberFolio;
                 this.generalData = '';
                 
                 alert('Registro Descartado');

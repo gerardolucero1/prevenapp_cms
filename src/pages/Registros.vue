@@ -4,25 +4,60 @@
     
     .row + .row
         margin-top: 10px
+
+    .box
+        margin-top: 20px
+        background-color: #FAFAFA
+        border: 1px solid #C2C2C2
+
+    .title
+        font-size: 18px
+        padding: 10px
+        background-color: white
+        border: 1px solid black
 </style>
 
 <template>
     <q-page>
-        <section class="row">
-            <div class="col">
-                <q-table
-                    title="Registros"
-                    :data="users"
-                    :columns="columns"
-                    row-key="name"
-                >
-                    <template v-slot:body-cell-actions="props">
-                        <q-td :props="props">
-                            <q-btn dense round flat color="grey" @click="getUser(props, 'bottom')" icon="visibility"></q-btn>
-                        </q-td>          
-                    </template>  
-                    
-                </q-table>
+        <section class="row" style="width: 90%; margin-left: 5%;">
+            <div class="col-12 box">
+                <p class="title" style="background:#FAE586">Lista de seguimiento</p>
+                <section class="row">
+                    <div class="col-12">
+                        <p class="title">
+                            <q-btn color="primary" icon="local_hospital" label="Hospitalarios" @click="getRegisters('Hospitalario')" />
+                            <q-btn color="primary" style="margin-left: 10px;" icon="healing" label="Sospechosos" @click="getRegisters('Sospechoso')" />
+                            <q-btn color="primary" style="margin-left: 10px;" icon="loyalty" label="Sin Riesgo" @click="getRegisters('Sin riesgo')" />
+                            <q-btn color="primary" style="margin-left: 10px;" icon="accessibility_new" label="Todos" @click="getUsers" />
+                        </p>
+                    </div>
+                    <div class="col-12">
+                        <q-table
+                            title="Registros"
+                            :data="users"
+                            :columns="columns"
+                            row-key="name"
+                            :filter="filter"
+                        >
+                            <template v-slot:top>
+                                <q-space />
+                                <q-input borderless dense debounce="300" color="primary" v-model="filter">
+                                    <template v-slot:append>
+                                        <q-icon name="search" />
+                                    </template>
+                                </q-input>
+                            </template>
+
+                            <template v-slot:body-cell-actions="props">
+                                <q-td :props="props">
+                                    <q-btn dense round flat color="grey" @click="getUser(props, 'bottom')" icon="visibility"></q-btn>
+                                </q-td>          
+                            </template>  
+                            
+                        </q-table>
+                    </div>
+                </section>
+                
             </div>
         </section>
 
@@ -41,7 +76,7 @@
                 <q-card-section>
                     <section class="row">
                         <div class="col-12" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
-                            <ion-label style="font-size:14px; font-weight:bold; ">Status Actual</ion-label>
+                            <label style="font-size:14px; font-weight:bold; ">Status Actual</label>
                             <q-badge v-if="userSelectStatus=='Hospitalario'" style="font-size: 12px; padding: 8px;" color="red" text-color="white" label="Hospitalario" />
                             <q-badge v-if="userSelectStatus=='Sospechoso'" style="font-size: 12px; padding: 8px;" color="orange" text-color="white" label="Sospechoso" />
                             <q-badge v-if="userSelectStatus=='Sin Riesgo'" style="font-size: 12px; padding: 8px;" color="green" text-color="white" label="Sin Riesgo" />
@@ -59,8 +94,7 @@
                                 <li v-if="userSelectSymptoms['8']!=undefined">{{userSelectSymptoms['8']}}</li>
                             </ul>
 
-                            <q-btn v-if="userSelect.numFolio=='0007' || userSelect.numFolio=='0006' || userSelect.numFolio=='0005' || userSelect.numFolio=='0004' || userSelect.numFolio=='0003' || userSelect.numFolio=='0002' || userSelect.numFolio=='0001'" style="margin-top: 10px;" color="primary" @click="goToForm()" label="Seguimiento" />
-                            <q-label v-else style="color:orange">Solo puedes dar un seguimiento diario por registro</q-label>
+                            <q-btn style="margin-top: 10px;" color="primary" @click="goToForm()" label="Seguimiento" />
                             
                         </div>
                     </section>
@@ -105,6 +139,8 @@ export default {
             userSelectSymptoms: '',
 
             bgImage: 'https://i.ibb.co/jfb3LCh/logo.png',
+            
+            filter: '',
 
             columns: [
                 {
@@ -157,6 +193,32 @@ export default {
                 console.log(error)
             }
         },
+
+        async getRegisters(args){
+            this.users = []
+            console.log(args)
+            try {
+                let response = await db.collection('forms')
+                                        .where('opinion', '==', args)
+                                        .get()
+                                        .then((doc) => {
+                                                    doc.forEach((res) => {
+                                                        this.users.push(res.data())
+                                                    })
+                                                })
+
+                if(this.userSelect != ''){
+                    this.userSelect = this.users.find((doc) => {
+                        return this.userSelect.uid = doc.uid
+                    })
+
+                    console.log(this.userSelect)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        },
+
         goToForm(){
             
             this.$router.push({
