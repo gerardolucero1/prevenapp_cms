@@ -19,20 +19,14 @@
 
 <template>
     <q-page>
-        <section class="row" style="width: 90%; margin-left: 5%;">
-            <div class="col-12 box">
-                <p class="title" style="background:#FAE586">Lista de seguimiento</p>
-                <section class="row">
-                    <div class="col-12">
-                        <p class="title">
-                            <q-btn color="primary" icon="local_hospital" label="Hospitalarios" @click="getRegisters('Hospitalario')" />
-                            <q-btn color="primary" style="margin-left: 10px;" icon="healing" label="Sospechosos" @click="getRegisters('Sospechoso')" />
-                            <q-btn color="primary" style="margin-left: 10px;" icon="loyalty" label="Sin Riesgo" @click="getRegisters('Sin riesgo')" />
-                            <q-btn color="primary" style="margin-left: 10px;" icon="accessibility_new" label="Todos" @click="getUsers" />
-                        </p>
-                    </div>
-                    <div class="col-12">
-                        <q-table
+        <section class="row">
+            <div class="col">
+                <q-btn color="blue" style="margin:10px" @click="getUsers()">Todos</q-btn>
+                <q-btn color="blue" style="margin:10px" @click="getHospitalarios()">Hospitalarios</q-btn>
+                <q-btn color="blue" style="margin:10px" @click="getSospechosos()">Sospechoso</q-btn>
+                <q-btn color="blue" style="margin:10px" @click="getSinRiesgo()">Sin Riesgo</q-btn>
+                <q-input type="text" placeholder="Buscar" @keyup.enter="getNombre()" v-model="buscadorNombre"></q-input>
+                <q-table
                             title="Registros"
                             :data="users"
                             :columns="columns"
@@ -47,17 +41,13 @@
                                     </template>
                                 </q-input>
                             </template>
-
-                            <template v-slot:body-cell-actions="props">
-                                <q-td :props="props">
-                                    <q-btn dense round flat color="grey" @click="getUser(props, 'bottom')" icon="visibility"></q-btn>
-                                </q-td>          
-                            </template>  
-                            
-                        </q-table>
-                    </div>
-                </section>
-                
+                    <template v-slot:body-cell-actions="props">
+                        <q-td :props="props">
+                            <q-btn dense round flat color="grey" @click="getUser(props, 'bottom')" icon="visibility"></q-btn>
+                        </q-td>          
+                    </template>  
+                    
+                </q-table>
             </div>
         </section>
 
@@ -96,6 +86,7 @@
 
                             <q-btn style="margin-top: 10px;" color="primary" @click="goToForm()" label="Seguimiento" />
                             
+                            
                         </div>
                     </section>
                     <section class="row">
@@ -131,8 +122,10 @@ export default {
 
     data(){
         return{
+            buscadorNombre:'',
             search: '',
             users: [],
+            usersF: [],
             userSelect: '',
             id:'',
             userSelectStatus: '',
@@ -172,13 +165,159 @@ export default {
 
     methods: {
         async getUsers(){
-            this.users = []
+            this.usersF = [];
+            this.users = [];
+            let contador=0;
+            let folios=[];
             try {
-                let response = await db.collection('forms')
+                let response = await db.collection('forms').orderBy('generalData.timestamp', 'desc')
                                                 .get()
                                                 .then((doc) => {
                                                     doc.forEach((res) => {
-                                                        this.users.push(res.data())
+
+                                                        this.usersF.push(res.data());
+
+                                                        if(folios.includes(this.usersF[contador].generalData.numFolio)){
+                                                            
+                                                        }else{
+                                                        
+                                                        this.users.push(res.data());}
+                                                        folios[contador]=this.usersF[contador].generalData.numFolio;
+                                                        contador++;
+                                                        
+                                                        
+                                                    })
+                                                })
+
+                if(this.userSelect != ''){
+                    this.userSelect = this.users.find((doc) => {
+                        return this.userSelect.uid = doc.uid
+                    })
+
+                    console.log(this.userSelect)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async getSospechosos(){
+            this.usersF = [];
+            this.users = [];
+            let contador=0;
+            let folios=[];
+            try {
+                let response = await db.collection('forms').where("opinion", '==', 'Sospechoso')
+                                                .get()
+                                                .then((doc) => {
+                                                    doc.forEach((res) => {
+                                                        this.usersF.push(res.data());
+
+                                                        if(folios.includes(this.usersF[contador].generalData.numFolio)){
+                                                            
+                                                        }else{
+                                                        
+                                                        this.users.push(res.data());}
+                                                        folios[contador]=this.usersF[contador].generalData.numFolio;
+                                                        contador++;
+                                                    })
+                                                })
+
+                if(this.userSelect != ''){
+                    this.userSelect = this.users.find((doc) => {
+                        return this.userSelect.uid = doc.uid
+                    })
+
+                    console.log(this.userSelect)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async getHospitalarios(){
+            this.usersF = [];
+            this.users = [];
+            let contador=0;
+            let folios=[];
+            try {
+                let response = await db.collection('forms').where("opinion", '==', 'Hospitalario')
+                                                .get()
+                                                .then((doc) => {
+                                                    doc.forEach((res) => {
+                                                        this.usersF.push(res.data());
+
+                                                        if(folios.includes(this.usersF[contador].generalData.numFolio)){
+                                                            
+                                                        }else{
+                                                        
+                                                        this.users.push(res.data());}
+                                                        folios[contador]=this.usersF[contador].generalData.numFolio;
+                                                        contador++;
+                                                    })
+                                                })
+
+                if(this.userSelect != ''){
+                    this.userSelect = this.users.find((doc) => {
+                        return this.userSelect.uid = doc.uid
+                    })
+
+                    console.log(this.userSelect)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async getSinRiesgo(){
+           this.usersF = [];
+            this.users = [];
+            let contador=0;
+            let folios=[];
+            try {
+                let response = await db.collection('forms').where("opinion", '==', 'Sin riesgo')
+                                                .get()
+                                                .then((doc) => {
+                                                    doc.forEach((res) => {
+                                                        this.usersF.push(res.data());
+
+                                                        if(folios.includes(this.usersF[contador].generalData.numFolio)){
+                                                            
+                                                        }else{
+                                                        
+                                                        this.users.push(res.data());}
+                                                        folios[contador]=this.usersF[contador].generalData.numFolio;
+                                                        contador++;
+                                                    })
+                                                })
+
+                if(this.userSelect != ''){
+                    this.userSelect = this.users.find((doc) => {
+                        return this.userSelect.uid = doc.uid
+                    })
+
+                    console.log(this.userSelect)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async getNombre(){
+            this.usersF = [];
+            this.users = [];
+            let contador=0;
+            let folios=[];
+            try {
+                let response = await db.collection('forms').where("generalData.name", "==", this.buscadorNombre)
+                                                .get()
+                                                .then((doc) => {
+                                                    doc.forEach((res) => {
+                                                        this.usersF.push(res.data());
+
+                                                        if(folios.includes(this.usersF[contador].generalData.numFolio)){
+                                                            
+                                                        }else{
+                                                        
+                                                        this.users.push(res.data());}
+                                                        folios[contador]=this.usersF[contador].generalData.numFolio;
+                                                        contador++;
                                                     })
                                                 })
 
