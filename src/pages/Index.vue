@@ -9,6 +9,23 @@
 <template>
     <q-page>
         <section v-if="user.user.userType == 'admin'">
+            <section class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-6 offset-3">
+                            <q-select v-model="select.state" :options="states" map-options emit-value option-label="name" option-value="name" label="Estado" filled />
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-6 offset-3">
+                            <q-select v-model="select.city" :options="cities" map-options emit-value option-label="name" option-value="name" label="Ciudad" filled />
+                        </div>
+                    </div>
+                </div>
+            </section>
             <section class="row flex justify-center">
                 <h4>Informacion actual Chihuahua (Municipal)</h4>
             </section>
@@ -151,7 +168,13 @@ export default {
     data(){
         return{
             cases: '',
-            casesM: ''
+            casesM: '',
+            select: {
+                state: '',
+                city: '',
+            },
+            states: [],
+            cities: [],
         }
     },
 
@@ -161,15 +184,59 @@ export default {
         ])
     },
 
+    watch: {
+        'select.state'(){
+            this.getCities()
+            this.getCases();
+        },
+
+        'select.city'(){
+            this.getCasesMunicipio();
+        }
+    },
+
     mounted(){
-        this.getCases();
-        this.getCasesMunicipio();
+        // this.getCases();
+        // this.getCasesMunicipio();
+        this.getStates();
     },
 
     methods: {
+        async getStates(){
+            try {
+                let response = await db.collection('cases')
+                                            .get()
+                                            .then((query) => {
+                                                query.forEach((doc) => {
+                                                    this.states.push(doc.data())
+                                                })
+                                            })
+            } catch (error) {
+                console.log(error)
+            }
+        },
+
+        async getCities(){
+            this.cities = []
+            try {
+                let response = await db.collection('cases')
+                                            .doc(this.select.state)
+                                            .collection('cities')
+                                            .get()
+                                            .then((query) => {
+                                                query.forEach((doc) => {
+                                                    this.cities.push(doc.data())
+                                                })
+                                            })
+            } catch (error) {
+                console.log(error)
+            }
+        },
+
         async updateCases(){
             try {
-                let response = await db.collection('cases').doc('chihuahua')
+                let response = await db.collection('cases')
+                                                .doc(this.select.state)
                                                 .update(this.cases)
 
             } catch (error) {
@@ -178,8 +245,11 @@ export default {
         },
         async updateCasesMunicipio(){
             try {
-                let response = await db.collection('cases').doc('municipio')
-                                                .update(this.casesM)
+                let response = await db.collection('cases')
+                                        .doc(this.select.state)
+                                        .collection('cities')
+                                        .doc(this.select.city)
+                                        .update(this.casesM)
 
             } catch (error) {
                 console.log(error)
@@ -188,7 +258,7 @@ export default {
 
         async getCases(){
             try {
-                let response = await db.collection('cases').doc('chihuahua').get()
+                let response = await db.collection('cases').doc(this.select.state).get()
 
                 if(response.exists){
                     this.cases = response.data()
@@ -199,7 +269,11 @@ export default {
         },
         async getCasesMunicipio(){
             try {
-                let response = await db.collection('cases').doc('municipio').get()
+                let response = await db.collection('cases')
+                                        .doc(this.select.state)
+                                        .collection('cities')
+                                        .doc(this.select.city)
+                                        .get()
 
                 if(response.exists){
                     this.casesM = response.data()

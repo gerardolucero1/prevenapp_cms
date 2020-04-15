@@ -25,7 +25,7 @@
                 <q-btn color="blue" style="margin:10px" @click="getHospitalarios()">Hospitalarios</q-btn>
                 <q-btn color="blue" style="margin:10px" @click="getSospechosos()">Sospechoso</q-btn>
                 <q-btn color="blue" style="margin:10px" @click="getSinRiesgo()">Sin Riesgo</q-btn>
-                <q-input type="text" placeholder="Buscar" @keyup.enter="getNombre()" v-model="buscadorNombre"></q-input>
+                <!-- <q-input type="text" placeholder="Buscar" @keyup.enter="getNombre()" v-model="buscadorNombre"></q-input> -->
                 <q-table
                             title="Registros"
                             :data="users"
