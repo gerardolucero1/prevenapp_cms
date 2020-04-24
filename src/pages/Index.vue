@@ -87,6 +87,25 @@
                         </q-card-section>
                     </q-card>
                 </div>
+                <div class="col">
+                    <q-card class="my-card">
+                        <q-card-section>
+                            <div class="text-h6">Desesos</div>
+                            <div class="text-subtitle2">Total de casos fallecidos:</div>
+                            <q-badge color="black" text-color="white" :label="casesM.deaths" style="font-size: 18px; font-weight: bold; padding: 10px;" />
+                            <q-popup-edit v-model="casesM.deaths" content-class="bg-accent text-white">
+                                <q-input @keyup.enter="updateCasesMunicipio" dark color="white" v-model="casesM.deaths" dense autofocus counter>
+                                    <template v-slot:append>
+                                    <q-icon name="edit" />
+                                    </template>
+                                </q-input>
+                            </q-popup-edit>
+                        </q-card-section>
+                        <q-card-section>
+                            
+                        </q-card-section>
+                    </q-card>
+                </div>
             </section>
             <section class="row flex justify-center">
                 <h4>Informacion actual Chihuahua (Estatal)</h4>
@@ -138,6 +157,25 @@
                             <q-badge color="green" text-color="white" :label="cases.recovered" style="font-size: 18px; font-weight: bold; padding: 10px;" />
                             <q-popup-edit v-model="cases.recovered" content-class="bg-accent text-white">
                                 <q-input @keyup.enter="updateCases" dark color="white" v-model="cases.recovered" dense autofocus counter>
+                                    <template v-slot:append>
+                                    <q-icon name="edit" />
+                                    </template>
+                                </q-input>
+                            </q-popup-edit>
+                        </q-card-section>
+                        <q-card-section>
+                            
+                        </q-card-section>
+                    </q-card>
+                </div>
+                <div class="col">
+                    <q-card class="my-card">
+                       <q-card-section>
+                            <div class="text-h6">Desesos</div>
+                            <div class="text-subtitle2">Total de casos fallecidos:</div>
+                            <q-badge color="black" text-color="white" :label="cases.deaths" style="font-size: 18px; font-weight: bold; padding: 10px;" />
+                            <q-popup-edit v-model="cases.deaths" content-class="bg-accent text-white">
+                                <q-input @keyup.enter="updateCases" dark color="white" v-model="cases.deaths" dense autofocus counter>
                                     <template v-slot:append>
                                     <q-icon name="edit" />
                                     </template>
@@ -235,6 +273,7 @@ export default {
 
         async updateCases(){
             try {
+                this.cases.date = new Date()
                 let response = await db.collection('cases')
                                                 .doc(this.select.state)
                                                 .update(this.cases)
@@ -245,6 +284,7 @@ export default {
         },
         async updateCasesMunicipio(){
             try {
+                this.casesM.date = new Date()
                 let response = await db.collection('cases')
                                         .doc(this.select.state)
                                         .collection('cities')
