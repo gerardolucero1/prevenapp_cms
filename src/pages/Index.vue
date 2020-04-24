@@ -91,7 +91,7 @@
                     <q-card class="my-card">
                         <q-card-section>
                             <div class="text-h6">Desesos</div>
-                            <div class="text-subtitle2">Total de casos fallecidos:</div>
+                            <div class="text-subtitle2">Total de casos desesos:</div>
                             <q-badge color="black" text-color="white" :label="casesM.deaths" style="font-size: 18px; font-weight: bold; padding: 10px;" />
                             <q-popup-edit v-model="casesM.deaths" content-class="bg-accent text-white">
                                 <q-input @keyup.enter="updateCasesMunicipio" dark color="white" v-model="casesM.deaths" dense autofocus counter>
@@ -172,7 +172,7 @@
                     <q-card class="my-card">
                        <q-card-section>
                             <div class="text-h6">Desesos</div>
-                            <div class="text-subtitle2">Total de casos fallecidos:</div>
+                            <div class="text-subtitle2">Total de casos desesos:</div>
                             <q-badge color="black" text-color="white" :label="cases.deaths" style="font-size: 18px; font-weight: bold; padding: 10px;" />
                             <q-popup-edit v-model="cases.deaths" content-class="bg-accent text-white">
                                 <q-input @keyup.enter="updateCases" dark color="white" v-model="cases.deaths" dense autofocus counter>
